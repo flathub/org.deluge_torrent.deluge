@@ -13,22 +13,21 @@ finish-args:
   - --talk-name=org.freedesktop.Notifications
   - --filesystem=xdg-download
 
+cleanup:
+  - /cache
+  - /man
+  - /share/aclocal
+  - /share/devhelp
+  - /include
+  - /lib/pkgconfig
+  - /share/gtk-doc
+  - /share/man
+  - /lib/*.a
+  - /lib/*.la
+
 modules:
 
 - name: boost
-  cleanup: [
-        "/cache",
-        "/man",
-        "/share/aclocal",
-        "/share/devhelp",
-        "/include",
-        "/lib/pkgconfig",
-        "/share/gtk-doc",
-        "/share/man",
-        "/lib/*.a",
-        "*.a",
-        "*.la"
-    ]
   buildsystem: simple
   sources:
   - type: archive
@@ -46,20 +45,6 @@ modules:
     - -DCMAKE_BUILD_TYPE=RelWithDebInfo
     - -Dpython-bindings=ON 
     - -Dboost-python-module-name=python
-    
-  cleanup: [
-        "/cache",
-        "/man",
-        "/share/aclocal",
-        "/share/devhelp",
-        "/include",
-        "/lib/pkgconfig",
-        "/share/gtk-doc",
-        "/share/man",
-        "/lib/*.a",
-        "*.a",
-        "*.la"
-  ]
   sources:
     - type: archive
       url: https://github.com/arvidn/libtorrent/releases/download/v1.2.12/libtorrent-rasterbar-1.2.12.tar.gz
@@ -69,8 +54,6 @@ modules:
 - name: wheel
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -80,8 +63,6 @@ modules:
 - name: six
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -91,7 +72,6 @@ modules:
 - name: Cython
   buildsystem: simple
   build-commands: 
-  - python3 setup.py build
   - python3 setup.py install --prefix=/app
   sources:
   - type: archive
@@ -101,7 +81,6 @@ modules:
 - name: rencode
   buildsystem: simple
   build-commands: 
-  - python3 setup.py build
   - python3 setup.py install --prefix=/app
   sources:
   - type: archive
@@ -111,8 +90,6 @@ modules:
 - name: pycparser
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -122,8 +99,6 @@ modules:
 - name: cffi
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -133,8 +108,6 @@ modules:
 - name: cryptography
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -144,8 +117,6 @@ modules:
 - name: pyopenssl
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -155,8 +126,6 @@ modules:
 - name: pyasn1
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -166,8 +135,6 @@ modules:
 - name: pyasn1-modules
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -177,8 +144,6 @@ modules:
 - name: attrs
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -188,8 +153,6 @@ modules:
 - name: service-identity
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -199,8 +162,6 @@ modules:
 - name: incremental
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -210,8 +171,6 @@ modules:
 - name: PyHamcrest
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -221,8 +180,6 @@ modules:
 - name: idna
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -232,8 +189,6 @@ modules:
 - name: hyperlink
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -243,8 +198,6 @@ modules:
 - name: docutils
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -254,8 +207,6 @@ modules:
 - name: mistune
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -265,8 +216,6 @@ modules:
 - name: m2r
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -276,8 +225,6 @@ modules:
 - name: setuptools
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -287,8 +234,6 @@ modules:
 - name: setuptools-scm
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -298,8 +243,6 @@ modules:
 - name: automat
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -309,8 +252,6 @@ modules:
 - name: constantly
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -320,8 +261,6 @@ modules:
 - name: zope.event
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -331,8 +270,6 @@ modules:
 - name: zope.interface
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -342,8 +279,6 @@ modules:
 - name: numpy
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -353,8 +288,6 @@ modules:
 - name: twisted
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -364,8 +297,6 @@ modules:
 - name: pillow
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -375,8 +306,6 @@ modules:
 - name: chardet
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -386,8 +315,6 @@ modules:
 - name: setproctitle
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -397,8 +324,6 @@ modules:
 - name: pyxdg
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -408,8 +333,6 @@ modules:
 - name: MarkupSafe
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -419,8 +342,6 @@ modules:
 - name: mako
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -429,9 +350,7 @@ modules:
 
 - name: python-dbus
   buildsystem: simple
-
   build-commands: 
-  - python3 setup.py build
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
@@ -441,10 +360,7 @@ modules:
 - name: deluge
   buildsystem: simple
   build-commands:
-  - python3 setup.py build
-  - python3 setup.py egg_info
   - python3 setup.py install --prefix=/app --root=/
-  
 
   post-install:
 
