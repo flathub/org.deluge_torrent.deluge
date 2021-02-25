@@ -11,9 +11,12 @@ finish-args:
   - --share=ipc
   - --share=network
   - --talk-name=org.freedesktop.Notifications
+  - --talk-name=org.kde.StatusNotifierWatcher
   - --filesystem=xdg-download
 
 modules:
+
+- shared-modules/libappindicator/libappindicator-gtk3-introspection-12.10.json
 
 - name: boost
   cleanup: [
