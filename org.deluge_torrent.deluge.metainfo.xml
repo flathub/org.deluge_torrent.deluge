@@ -8,6 +8,7 @@
   <project_license>GPL-3.0</project_license>
   <summary>A fully-featured BitTorrent Client</summary>
   <url type="homepage">http://deluge-torrent.org/</url>
+  <url type="donate">https://ko-fi.com/fastrizwaan</url>
   <description>
     <p>Deluge is a Free Software, cross-platform BitTorrent client on Python and Gtk3 with multiple user interfaces in client/server model.</p>
     <p>Deluge includes the following features:</p>
