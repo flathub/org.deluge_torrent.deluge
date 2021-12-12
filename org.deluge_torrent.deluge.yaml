@@ -400,16 +400,16 @@ modules:
   
   # Fix open download folder bug
   # https://dev.deluge-torrent.org/changeset/833b5a1f306dad600d0f64a5c897407ba1584830/
-  - patch -p1 < open_download_folder.patch /app/lib/python3.8/site-packages/deluge/common.py
+#  - patch -p1 < open_download_folder.patch /app/lib/python3.8/site-packages/deluge/common.py
   
   sources:
   - type: archive
-    url: https://ftp.osuosl.org/pub/deluge/source/2.0/deluge-2.0.3.tar.xz
-    sha256: 7e7ae8e6ca2a2bf0d487227cecf81e27332f0b92b567cc2bda38e47d859da891
+    url: https://ftp.osuosl.org/pub/deluge/source/2.0/deluge-2.0.4.tar.xz
+    sha256: a34d64d209a526f60f8c5be095a7432c432d3de760a0165c208de3e1a5643918
   
   - type: file
     path: org.deluge_torrent.deluge.metainfo.xml
-  - type: file
-    path: patches/open_download_folder.patch
+#  - type: file
+#    path: patches/open_download_folder.patch
     
     
