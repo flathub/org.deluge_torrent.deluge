@@ -404,8 +404,8 @@ modules:
   
   sources:
   - type: archive
-    url: https://ftp.osuosl.org/pub/deluge/source/2.0/deluge-2.0.4.tar.xz
-    sha256: a34d64d209a526f60f8c5be095a7432c432d3de760a0165c208de3e1a5643918
+    url: https://ftp.osuosl.org/pub/deluge/source/2.0/deluge-2.0.5.tar.xz
+    sha256: c4bd04abfd211b65218be03f3c46d26f44024884de10e01859fb856fdd6f25d8
   
   - type: file
     path: org.deluge_torrent.deluge.metainfo.xml
