@@ -394,7 +394,7 @@ modules:
   - sed 's/^_//g' -i /app/share/applications/org.deluge_torrent.deluge.desktop
   
   - desktop-file-edit --set-icon=org.deluge_torrent.deluge /app/share/applications/org.deluge_torrent.deluge.desktop
-  - desktop-file-edit --set-key=Keywords --set-value=Keywords=torrent;magnet;sharing
+  - desktop-file-edit --set-key=Keywords --set-value=Keywords=torrent;magnet;sharing /app/share/applications/org.deluge_torrent.deluge.desktop
   
   - mkdir -p /app/share/metainfo
   - install -Dm644 org.deluge_torrent.deluge.metainfo.xml /app/share/metainfo/
