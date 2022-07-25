@@ -7,7 +7,7 @@
   <name>Deluge</name>
   <project_license>GPL-3.0</project_license>
   <summary>A fully-featured BitTorrent Client</summary>
-  <url type="homepage">http://deluge-torrent.org/</url>
+  <url type="homepage">https://deluge-torrent.org</url>
   <url type="donation">https://www.patreon.com/deluge_cas</url>
   <description>
     <p>Deluge is a Free Software, cross-platform BitTorrent client on Python and Gtk3 with multiple user interfaces in client/server model.</p>
@@ -25,6 +25,9 @@
       <li>Stream Torrent - sequential download</li>
       <li>GTK interface</li>
     </ul>
+    <p>
+       Changelog at deluge.readthedocs.io/en/latest/changelog.html
+    </p>
   </description>
   <screenshots>
     <screenshot type="default">
@@ -37,6 +40,7 @@
   <update_contact>https://github.com/fastrizwaan/deluge_flatpak</update_contact>
   <translation type="gettext">Deluge</translation>
   <releases>
+    <release date="2022-07-10" version="2.1.1"/>
     <release date="2022-06-28" version="2.1.0"/>
     <release date="2021-12-15" version="2.0.5"/>
     <release date="2021-12-12" version="2.0.4"/>
