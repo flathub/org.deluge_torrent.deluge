@@ -1,9 +1,25 @@
 app-id: org.deluge_torrent.deluge
 runtime: org.freedesktop.Platform
-runtime-version: '21.08'
+runtime-version: '22.08'
 sdk: org.freedesktop.Sdk
 command: deluge-gtk
 rename-icon: deluge
+
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.rust-stable
+
+build-options:
+  append-path: /usr/lib/sdk/rust-stable/bin
+  build-args:
+    - --share=network
+  env:
+    - CARGO_HOME: "/run/build/rust-flatpak/cargo"
+    - CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER: "clang"
+    - CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS: "-C link-arg=-fuse-ld=/usr/lib/sdk/rust-stable/bin/mold"
+    - CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: "clang"
+    - CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_RUSTFLAGS: "-C link-arg=-fuse-ld=/usr/lib/sdk/rust-stable/bin/mold"
+
+
 
 finish-args:
   - --socket=x11
@@ -27,14 +43,14 @@ cleanup:
 
 modules:
 
-- shared-modules/libappindicator/libappindicator-gtk3-introspection-12.10.json
+#- shared-modules/libappindicator/libappindicator-gtk3-introspection-12.10.json
 
 - name: boost
   buildsystem: simple
   sources:
   - type: archive
-    url: https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2
-    sha256: f0397ba6e982c4450f27bf32a2a83292aba035b827a5623a14636ea583318c41
+    url: https://boostorg.jfrog.io/artifactory/main/release/1.80.0/source/boost_1_80_0.tar.bz2
+    sha256: 1e19565d82e43bc59209a168f5ac899d3ba471d55c7610c677d4ccf2c9c500c0 
   build-commands:
   - ./bootstrap.sh --prefix="${FLATPAK_DEST}" --with-python=python3 
   - ./b2 stage  -j $FLATPAK_BUILDER_N_JOBS variant=release threading=multi link=shared debug-symbols=off
@@ -107,14 +123,60 @@ modules:
     url: https://files.pythonhosted.org/packages/66/6a/98e023b3d11537a5521902ac6b50db470c826c682be6a8c661549cb7717a/cffi-1.14.4.tar.gz
     sha256: 1a465cbe98a7fd391d47dce4b8f7e5b921e6cd805ef421d04f5f66ba8f06086c
 
+#- shared-modules/python3-cryptography.json
+- name: setuptools
+  buildsystem: simple
+  build-commands:
+  - python3 setup.py install --prefix=/app --root=/
+  sources:
+  - type: archive
+    url: https://files.pythonhosted.org/packages/f8/b8/fe1dfb94342906c65acfda3d8f35984c87e0511bf574942c22aed756d0f6/setuptools-65.6.2.tar.gz 
+    sha256: 41fa68ecac9e099122990d7437bc10683b966c32a591caa2824dffcffd5dea7a
+
+- name: setuptools-scm
+  buildsystem: simple
+  build-commands:
+  - python3 setup.py install --prefix=/app --root=/
+  sources:
+  - type: archive
+    url: https://files.pythonhosted.org/packages/af/df/f8aa8a78d4d29e0cffa4512e9bc223ed02f24893fe1837c6cee2749ebd67/setuptools_scm-5.0.1.tar.gz
+    sha256: c85b6b46d0edd40d2301038cdea96bb6adc14d62ef943e75afb08b3e7bcf142a
+
+- name: typing_extensions
+  buildsystem: simple
+  build-commands:
+  - pip3 install --prefix=/app typing*.whl
+  sources:
+  - type: file
+    url: https://files.pythonhosted.org/packages/0b/8e/f1a0a5a76cfef77e1eb6004cb49e5f8d72634da638420b9ea492ce8305e8/typing_extensions-4.4.0-py3-none-any.whl
+    sha256: 16fa4864408f655d35ec496218b85f79b3437c829e93320c7c9215ccfd92489e
+
+- name: semantic_version
+  buildsystem: simple
+  build-commands:
+  - pip3 install --prefix=/app semantic*.whl
+  sources:
+  - type: file
+    url: https://files.pythonhosted.org/packages/6a/23/8146aad7d88f4fcb3a6218f41a60f6c2d4e3a72de72da1825dc7c8f7877c/semantic_version-2.10.0-py2.py3-none-any.whl
+    sha256: de78a3b8e0feda74cabc54aab2da702113e33ac9d9eb9d2389bcf1f58b7d9177
+
+- name: setuptools_rust
+  buildsystem: simple
+  build-commands:
+  - pip3 install --prefix=/app setuptools*.whl
+  sources:
+  - type: file
+    url: https://files.pythonhosted.org/packages/ef/da/dca8f90986325abe3027a5e3af5e12ce1d78eeb664a11971b2e7e703b9e3/setuptools_rust-1.5.2-py3-none-any.whl
+    sha256: 8eb45851e34288f2296cd5ab9e924535ac1757318b730a13fe6836867843f206
+
 - name: cryptography
   buildsystem: simple
   build-commands:
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
-    url: https://files.pythonhosted.org/packages/b7/82/f7a4ddc1af185936c1e4fa000942ffa8fb2d98cff26b75afa7b3c63391c4/cryptography-3.3.1.tar.gz
-    sha256: 7e177e4bea2de937a584b13645cab32f25e3d96fc0bc4a4cf99c27dc77682be6
+    url: https://files.pythonhosted.org/packages/13/dd/a9608b7aebe5d2dc0c98a4b2090a6b815628efa46cc1c046b89d8cd25f4c/cryptography-38.0.3.tar.gz
+    sha256: bfbe6ee19615b07a98b1d2287d6a6073f734735b49ee45b11324d85efc4d5cbd
 
 - name: pyopenssl
   buildsystem: simple
@@ -122,8 +184,8 @@ modules:
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
-    url: https://files.pythonhosted.org/packages/98/cd/cbc9c152daba9b5de6094a185c66f1c6eb91c507f378bb7cad83d623ea88/pyOpenSSL-20.0.1.tar.gz
-    sha256: 4c231c759543ba02560fcd2480c48dcec4dae34c9da7d3747c508227e0624b51
+    url: https://files.pythonhosted.org/packages/e7/2f/c6d89edac75482f11e231b644e365d31d5479b7b727734e6a8f3d00decd5/pyOpenSSL-22.1.0.tar.gz
+    sha256: 7a83b7b272dd595222d672f5ce29aa030f1fb837630ef229f62e72e395ce8968
 
 - name: pyasn1
   buildsystem: simple
@@ -149,8 +211,8 @@ modules:
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
-    url: https://files.pythonhosted.org/packages/f0/cb/80a4a274df7da7b8baf083249b0890a0579374c3d74b5ac0ee9291f912dc/attrs-20.3.0.tar.gz
-    sha256: 832aa3cde19744e49938b91fea06d69ecb9e649c93ba974535d08ad92164f700
+    url: https://files.pythonhosted.org/packages/1a/cb/c4ffeb41e7137b23755a45e1bfec9cbb76ecf51874c6f1d113984ecaa32c/attrs-22.1.0.tar.gz
+    sha256: 29adc2665447e5191d0e7c568fde78b21f9672d344281d0c6e1ab085429b22b6
 
 - name: service-identity
   buildsystem: simple
@@ -158,8 +220,8 @@ modules:
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
-    url: https://files.pythonhosted.org/packages/9a/3d/9eb0563e066ea0540cf580695593ab079376e920016d4d1b3ff2fd8abf4b/service_identity-18.1.0.tar.gz
-    sha256: 0858a54aabc5b459d1aafa8a518ed2081a285087f349fe3e55197989232e2e2d
+    url: https://files.pythonhosted.org/packages/09/2e/26ade69944773df4748c19d3053e025b282f48de02aad84906d34a29d28b/service-identity-21.1.0.tar.gz
+    sha256: 6e6c6086ca271dc11b033d17c3a8bea9f24ebff920c587da090afc9519419d34
 
 - name: incremental
   buildsystem: simple
@@ -167,8 +229,8 @@ modules:
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
-    url: https://files.pythonhosted.org/packages/8f/26/02c4016aa95f45479eea37c90c34f8fab6775732ae62587a874b619ca097/incremental-17.5.0.tar.gz
-    sha256: 7b751696aaf36eebfab537e458929e194460051ccad279c72b755a167eebd4b3
+    url: https://files.pythonhosted.org/packages/86/42/9e87f04fa2cd40e3016f27a4b4572290e95899c6dce317e2cdb580f3ff09/incremental-22.10.0.tar.gz
+    sha256: 912feeb5e0f7e0188e6f42241d2f450002e11bbc0937c65865045854c24c0bd0
 
 - name: PyHamcrest
   buildsystem: simple
@@ -224,23 +286,7 @@ modules:
     url: https://files.pythonhosted.org/packages/39/e7/9fae11a45f5e1a3a21d8a98d02948e597c4afd7848a0dbe1a1ebd235f13e/m2r-0.2.1.tar.gz
     sha256: bf90bad66cda1164b17e5ba4a037806d2443f2a4d5ddc9f6a5554a0322aaed99
 
-- name: setuptools
-  buildsystem: simple
-  build-commands:
-  - python3 setup.py install --prefix=/app --root=/
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/f4/d5/a6c19dcbcbc267aca376558797f036d9bcdff344c9f785fe7d0fe9a5f2a7/setuptools-41.4.0.zip
-    sha256: 7eae782ccf36b790c21bde7d86a4f303a441cd77036b25c559a602cf5186ce4d
 
-- name: setuptools-scm
-  buildsystem: simple
-  build-commands:
-  - python3 setup.py install --prefix=/app --root=/
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/af/df/f8aa8a78d4d29e0cffa4512e9bc223ed02f24893fe1837c6cee2749ebd67/setuptools_scm-5.0.1.tar.gz
-    sha256: c85b6b46d0edd40d2301038cdea96bb6adc14d62ef943e75afb08b3e7bcf142a
 
 - name: automat
   buildsystem: simple
@@ -284,8 +330,8 @@ modules:
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
-    url: https://files.pythonhosted.org/packages/82/a8/1e0f86ae3f13f7ce260e9f782764c16559917f24382c74edfb52149897de/numpy-1.20.2.zip
-    sha256: 878922bf5ad7550aa044aa9301d417e2d3ae50f0f577de92051d739ac6096cee
+    url: https://files.pythonhosted.org/packages/42/38/775b43da55fa7473015eddc9a819571517d9a271a9f8134f68fb9be2f212/numpy-1.23.5.tar.gz
+    sha256: 1b1766d6f397c18153d40015ddfc79ddb715cabadc04d2d228d4e5a8bc4ded1a
 
 - name: twisted
   buildsystem: simple
@@ -293,8 +339,8 @@ modules:
   - python3 setup.py install --prefix=/app --root=/
   sources:
   - type: archive
-    url: https://files.pythonhosted.org/packages/4a/b4/4973c7ccb5be2ec0abc779b7d5f9d5f24b17b0349e23240cfc9dc3bd83cc/Twisted-20.3.0.tar.bz2
-    sha256: d72c55b5d56e176563b91d11952d13b01af8725c623e498db5507b6614fc1e10
+    url: https://files.pythonhosted.org/packages/b2/ce/cbb56597127b1d51905b0cddcc3f314cc769769efc5e9a8a67f4617f7bca/Twisted-22.10.0.tar.gz
+    sha256: 32acbd40a94f5f46e7b42c109bfae2b302250945561783a8b7a059048f2d4d31
 
 - name: pillow
   buildsystem: simple
@@ -380,8 +426,6 @@ modules:
   - type: archive
     url: https://files.pythonhosted.org/packages/51/2f/4d5d5afb7000b9151e33952b59163c9389bd867ac6fe85d62f85831fa061/PyGObject-3.40.1.tar.gz
     sha256: 6fb599aa59ceb9dd05fafb0d72b3862943e7d5e85c8ef6c74856bc6d4321cbab
-   
- 
  
 - name: deluge
   buildsystem: simple
