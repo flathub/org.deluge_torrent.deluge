@@ -1,0 +1,163 @@
+{
+    "name": "python3-package-installation",
+    "buildsystem": "simple",
+    "build-commands": [
+        "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} --no-build-isolation setuptools setuptools-scm pyOpenSSL zope.interface Mako pyasn1 pyxdg attrs Automat constantly cryptography hyperlink idna incremental MarkupSafe service-identity typing-extensions Twisted cffi pyasn1-modules six pycparser"
+    ],
+    "sources": [
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/00/3f/ea5cfb789dddb327e6d2cf9377c36d9d8607af85530af0e7001165587ae7/pyOpenSSL-22.1.0-py3-none-any.whl",
+            "sha256": "b28437c9773bb6c6958628cf9c3bebe585de661dba6f63df17111966363dd15e"
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/e5/8d/cf41b66a8110670e3ad03dab9b759704eeed07fa96e90fdc0357b2ba70e2/pyxdg-0.28-py2.py3-none-any.whl",
+            "sha256": "bdaf595999a0178ecea4052b7f4195569c1ff4d344567bccdc12dfdf02d545ab"
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/62/1e/a94a8d635fa3ce4cfc7f506003548d0a2447ae76fd5ca53932970fe3053f/pyasn1-0.4.8-py2.py3-none-any.whl",
+            "sha256": "39c7e2ec30515947ff4e87fb6f456dfc6e84857d34be479c9d4a4ba4bf46aa5d"
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/ef/41/19da352d341963d29a33bdb28433ba94c05672fb16155f794fad3fd907b0/cffi-1.15.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+            "sha256": "21157295583fe8943475029ed5abdcf71eb3911894724e360acff1d61c1d54bc",
+            "only-arches": [
+                "aarch64"
+            ]
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/29/90/64aabce6c1b820395452cc5472b8f11cd98320f40941795b8069aef4e0e0/Automat-22.10.0-py2.py3-none-any.whl",
+            "sha256": "c3164f8742b9dc440f3682482d32aaff7bb53f71740dd018533f9de286b64180"
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/6e/aa/8caf6a0a3e62863cbb9dab27135660acba46903b703e224f14f447e57934/hyperlink-21.0.0-py2.py3-none-any.whl",
+            "sha256": "e6b14c37ecb73e89c77d78cdb4c2cc8f3fb59a885c5b3f819ff4ed80f25af1b4"
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/ac/63/b5540d15dfeb7388fbe12fa55a902c118fd2b324be5430cdeac0c0439489/Twisted-22.10.0-py3-none-any.whl",
+            "sha256": "86c55f712cc5ab6f6d64e02503352464f0400f66d4f079096d744080afcccbd0"
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/88/89/c34caf63029fb7628ec2ebd5c88ae0c9bd17db98c812e4065a4d020ca41f/cffi-1.15.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+            "sha256": "dd86c085fae2efd48ac91dd7ccffcfc0571387fe1193d33b6394db7ef31fe2a4",
+            "only-arches": [
+                "x86_64"
+            ]
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/62/d5/5f610ebe421e85889f2e55e33b7f9a6795bd982198517d912eb1c76e1a53/pycparser-2.21-py2.py3-none-any.whl",
+            "sha256": "8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9"
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/57/68/5fe4461ce8c0611eb09452e613512e1ddf62afcafc1ef4003d26345b3efe/cryptography-38.0.3-cp36-abi3-manylinux_2_28_x86_64.whl",
+            "sha256": "5419a127426084933076132d317911e3c6eb77568a1ce23c3ac1e12d111e61e0",
+            "only-arches": [
+                "x86_64"
+            ]
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/93/5a/5e93f280ec7be676b5a57f305350f439d31ced168bca04e6ffa64b575664/service_identity-21.1.0-py2.py3-none-any.whl",
+            "sha256": "f0b0caac3d40627c3c04d7a51b6e06721857a0e10a8775f2d1d7e72901b3a7db"
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/fc/34/3030de6f1370931b9dbb4dad48f6ab1015ab1d32447850b9fc94e60097be/idna-3.4-py3-none-any.whl",
+            "sha256": "90b77e79eaa3eba6de819a0c442c0b4ceefc341a7a2ab77d7562bf49f425c5c2"
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/f2/bc/d817287d1aa01878af07c19505fafd1165cd6a119e9d0821ca1d1c20312d/attrs-22.1.0-py2.py3-none-any.whl",
+            "sha256": "86efa402f67bf2df34f51a335487cf46b1ec130d02b8d39fd248abfd30da551c"
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/9e/82/2e089c6f34e77c073aa5a67040d368aac0dfb9b8ccbb46d381452c26fc33/MarkupSafe-2.1.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+            "sha256": "10c1bfff05d95783da83491be968e8fe789263689c02724e0c691933c52994f5",
+            "only-arches": [
+                "x86_64"
+            ]
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/77/51/8073577012492fcd15628e811db585f447c500fa407e944ab3a18ec55fb7/incremental-22.10.0-py2.py3-none-any.whl",
+            "sha256": "b864a1f30885ee72c5ac2835a761b8fe8aa9c28b9395cacf27286602688d3e51"
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/db/6e/2815f7c8561b088ccedc128681e64daac3d6b2e81a9918b007e244dad8b1/setuptools_scm-5.0.1-py2.py3-none-any.whl",
+            "sha256": "62fa535edb31ece9fa65dc9dcb3056145b8020c8c26c0ef1018aef33db95c40d"
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/48/fa/25d98f89f07e4524e465d4d5ca4164a443628eae0548f1ec085ea0ed2889/zope.interface-5.5.2-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl",
+            "sha256": "f98d4bd7bbb15ca701d19b93263cc5edfd480c3475d163f137385f49e5b3a3a7",
+            "only-arches": [
+                "x86_64"
+            ]
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/ef/e3/29d6e1a07e8d90ace4a522d9689d03e833b67b50d1588e693eec15f26251/setuptools-65.6.3-py3-none-any.whl",
+            "sha256": "57f6f22bde4e042978bcd50176fdb381d7c21a9efa4041202288d3737a0c6a54"
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/0b/8e/f1a0a5a76cfef77e1eb6004cb49e5f8d72634da638420b9ea492ce8305e8/typing_extensions-4.4.0-py3-none-any.whl",
+            "sha256": "16fa4864408f655d35ec496218b85f79b3437c829e93320c7c9215ccfd92489e"
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/95/de/214830a981892a3e286c3794f41ae67a4495df1108c3da8a9f62159b9a9d/pyasn1_modules-0.2.8-py2.py3-none-any.whl",
+            "sha256": "a50b808ffeb97cb3601dd25981f6b016cbb3d31fbf57a8b8a87428e6158d0c74"
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/03/3b/68690a035ba7347860f1b8c0cde853230ba69ff41df5884ea7d89fe68cd3/Mako-1.2.4-py3-none-any.whl",
+            "sha256": "c97c79c018b9165ac9922ae4f32da095ffd3c4e6872b45eded42926deea46818"
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/d9/5a/e7c31adbe875f2abbb91bd84cf2dc52d792b5a01506781dbcf25c91daf11/six-1.16.0-py2.py3-none-any.whl",
+            "sha256": "8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/b9/65/48c1909d0c0aeae6c10213340ce682db01b48ea900a7d9fce7a7910ff318/constantly-15.1.0-py2.py3-none-any.whl",
+            "sha256": "dd2fa9d6b1a51a83f0d7dd76293d734046aa176e384bf6e33b7e44880eb37c5d"
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/ed/c9/265a39c9933aef7cea402c25fb80f6455407d74ed761816496166f55d05a/zope.interface-5.5.2-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+            "sha256": "dc26c8d44472e035d59d6f1177eb712888447f5799743da9c398b0339ed90b1b",
+            "only-arches": [
+                "aarch64"
+            ]
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/ff/3a/42262a3aa6415befee33b275b31afbcef4f7f8d2f4380061b226c692ee2a/MarkupSafe-2.1.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+            "sha256": "a49907dd8420c5685cfa064a1335b6754b74541bbb3706c259c02ed65b644b3e",
+            "only-arches": [
+                "aarch64"
+            ]
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/6f/bd/c0459289c3ede4102ff65b6dda437c5b23833c360f0cf2b89a1c4a24f764/cryptography-38.0.3-cp36-abi3-manylinux_2_28_aarch64.whl",
+            "sha256": "dfb4f4dd568de1b6af9f4cda334adf7d72cf5bc052516e1b2608b683375dd95c",
+            "only-arches": [
+                "aarch64"
+            ]
+        }
+    ]
+}
