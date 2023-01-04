@@ -1,7 +1,7 @@
 app-id: org.deluge_torrent.deluge
-runtime: org.freedesktop.Platform
-runtime-version: '22.08'
-sdk: org.freedesktop.Sdk
+runtime: org.gnome.Platform
+runtime-version: "43"
+sdk: org.gnome.Sdk
 command: deluge-gtk
 rename-icon: deluge
 
