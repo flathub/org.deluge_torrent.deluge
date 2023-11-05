@@ -1,6 +1,6 @@
 app-id: org.deluge_torrent.deluge
 runtime: org.freedesktop.Platform
-runtime-version: "22.08"
+runtime-version: "23.08"
 sdk: org.freedesktop.Sdk
 sdk-extension: org.gnome.Sdk
 #sdk-version: "43"
@@ -36,8 +36,8 @@ modules:
   buildsystem: simple
   sources:
   - type: archive
-    url: https://boostorg.jfrog.io/artifactory/main/release/1.80.0/source/boost_1_80_0.tar.bz2
-    sha256: 1e19565d82e43bc59209a168f5ac899d3ba471d55c7610c677d4ccf2c9c500c0 
+    url: https://boostorg.jfrog.io/artifactory/main/release/1.83.0/source/boost_1_83_0.tar.bz2
+    sha256: 6478edfe2f3305127cffe8caf73ea0176c53769f4bf1585be237eb30798c3b8e 
   build-commands:
   - ./bootstrap.sh --prefix="${FLATPAK_DEST}" --with-python=python3 
   - ./b2 stage  -j $FLATPAK_BUILDER_N_JOBS variant=release threading=multi link=shared debug-symbols=off
@@ -52,8 +52,8 @@ modules:
     - -Dboost-python-module-name=python
   sources:
     - type: archive
-      url: https://github.com/arvidn/libtorrent/archive/refs/tags/v1.2.18.tar.gz
-      sha256: c4213bfb695db3e3b266be71865a7942f9007200aa4021946818fdc5e5e4a3d3
+      url: https://github.com/arvidn/libtorrent/releases/download/v2.0.9/libtorrent-rasterbar-2.0.9.tar.gz
+      sha256: 90cd92b6061c5b664840c3d5e151d43fedb24f5b2b24e14425ffbb884ef1798e
 
 ## Python3 modules
 - name: setuptools
@@ -73,6 +73,34 @@ modules:
   - type: archive
     url: https://files.pythonhosted.org/packages/af/df/f8aa8a78d4d29e0cffa4512e9bc223ed02f24893fe1837c6cee2749ebd67/setuptools_scm-5.0.1.tar.gz
     sha256: c85b6b46d0edd40d2301038cdea96bb6adc14d62ef943e75afb08b3e7bcf142a
+
+- name: zope.interface
+  buildsystem: simple
+  build-commands: 
+  - python3 setup.py install --prefix=/app
+  sources:
+  - type: archive
+    url: https://files.pythonhosted.org/packages/87/03/6b85c1df2dca1b9acca38b423d1e226d8ffdf30ebd78bcb398c511de8b54/zope.interface-6.1.tar.gz
+    sha256: 2fdc7ccbd6eb6b7df5353012fbed6c3c5d04ceaca0038f75e601060e95345309 
+
+
+- name: pycparser
+  buildsystem: simple
+  build-commands: 
+  - python3 setup.py install --prefix=/app
+  sources:
+  - type: archive
+    url: https://files.pythonhosted.org/packages/5e/0b/95d387f5f4433cb0f53ff7ad859bd2c6051051cebbb564f139a999ab46de/pycparser-2.21.tar.gz
+    sha256: e644fdec12f7872f86c58ff790da456218b10f863970249516d60a5eaca77206
+    
+- name: cffi
+  buildsystem: simple
+  build-commands: 
+  - python3 setup.py install --prefix=/app
+  sources:
+  - type: archive
+    url: https://files.pythonhosted.org/packages/68/ce/95b0bae7968c65473e1298efb042e10cafc7bafc14d9e4f154008241c91d/cffi-1.16.0.tar.gz
+    sha256: bcb3ef43e58665bbda2fb198698fcae6776483e0c4a631aa5647806c25e02cc0
 
 - name: rencode
   buildsystem: simple
