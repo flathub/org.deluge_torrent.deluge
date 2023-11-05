@@ -80,7 +80,7 @@ modules:
   - python3 setup.py install --prefix=/app
   sources:
   - type: archive
-    url: https://files.pythonhosted.org/packages/87/03/6b85c1df2dca1b9acca38b423d1e226d8ffdf30ebd78bcb398c511de8b54/zope.interface-6.1.tar.gz	
+    url: https://files.pythonhosted.org/packages/87/03/6b85c1df2dca1b9acca38b423d1e226d8ffdf30ebd78bcb398c511de8b54/zope.interface-6.1.tar.gz
     sha256: 2fdc7ccbd6eb6b7df5353012fbed6c3c5d04ceaca0038f75e601060e95345309 
 
 
