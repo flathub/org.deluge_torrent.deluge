@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2021 Asif Ali Rizvan -->
-<component>
+<component type="desktop">
   <id type="desktop">org.deluge_torrent.deluge</id>
   <launchable type="desktop-id">org.deluge_torrent.deluge.desktop</launchable>
   <metadata_license>CC0-1.0</metadata_license>
@@ -37,6 +37,7 @@
       <image>https://raw.githubusercontent.com/fastrizwaan/deluge_flatpak/main/screenshots/TWO.png</image>
     </screenshot>
   </screenshots>
+  <developer_name>Deluge Team</developer_name>
   <update_contact>https://github.com/fastrizwaan/deluge_flatpak</update_contact>
   <translation type="gettext">Deluge</translation>
   <releases>
