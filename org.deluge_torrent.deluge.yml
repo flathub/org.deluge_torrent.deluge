@@ -111,14 +111,31 @@ modules:
     url: https://files.pythonhosted.org/packages/46/c2/427f1867bb96555d1d34342f1dd97f8c420966ab564d58d18469a1db8736/zope.event-5.0.tar.gz
     sha256: bac440d8d9891b4068e2b5a2c5e2c9765a9df762944bda6955f96bb9b91e67cd
 
+# using wheel for deluged
 - name: zope.interface
   buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
+  build-commands:
+    - pip3 install --prefix=/app zope.interface*.whl
   sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/09/06/7c1202972bc99dd1b731c3c01157855cbc8d0944894c3b234473b1f4119c/zope.interface-6.4.post2.tar.gz
-    sha256: 1c207e6f6dfd5749a26f5a5fd966602d6b824ec00d2df84a7e9a924e8933654e 
+    - type: file
+      url: https://files.pythonhosted.org/packages/95/00/1c97f0b1622b4eb587e8aea84f109b426c6d3506fba043052dafeb4cab95/zope.interface-6.3-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+      sha256: d165d7774d558ea971cb867739fb334faf68fc4756a784e689e11efa3becd59e
+      only-arches:
+        - x86_64
+      x-checker-data:
+        type: pypi
+        name: zope.interface
+        packagetype: bdist_wheel
+    - type: file
+      url: https://files.pythonhosted.org/packages/35/0c/2442f1d7fd3fc2f4179892c161f79e7d3dd5dd483c79a57c3f6355675374/zope.interface-6.3-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+      sha256: 10cde8dc6b2fd6a1d0b5ca4be820063e46ddba417ab82bcf55afe2227337b130
+      only-arches:
+        - aarch64
+      x-checker-data:
+        type: pypi
+        name: zope.interface
+        packagetype: bdist_wheel
+
 
 - name: zope.schema
   buildsystem: simple
