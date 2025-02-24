@@ -30,8 +30,8 @@
         },
         {
             "type": "file",
-            "url": "https://files.pythonhosted.org/packages/29/90/64aabce6c1b820395452cc5472b8f11cd98320f40941795b8069aef4e0e0/Automat-22.10.0-py2.py3-none-any.whl",
-            "sha256": "c3164f8742b9dc440f3682482d32aaff7bb53f71740dd018533f9de286b64180"
+            "url": "https://files.pythonhosted.org/packages/af/cc/55a32a2c98022d88812b5986d2a92c4ff3ee087e83b712ebc703bba452bf/Automat-24.8.1-py3-none-any.whl",
+            "sha256": "bf029a7bc3da1e2c24da2343e7598affaa9f10bf0ab63ff808566ce90551e02a"
         },
         {
             "type": "file",
@@ -40,8 +40,8 @@
         },
         {
             "type": "file",
-            "url": "https://files.pythonhosted.org/packages/ac/63/b5540d15dfeb7388fbe12fa55a902c118fd2b324be5430cdeac0c0439489/Twisted-22.10.0-py3-none-any.whl",
-            "sha256": "86c55f712cc5ab6f6d64e02503352464f0400f66d4f079096d744080afcccbd0"
+            "url": "https://files.pythonhosted.org/packages/70/53/a50654eb9c63da0df2b5dca8ec27656a88b7edd798de5ffad55353203874/twisted-24.11.0-py3-none-any.whl",
+            "sha256": "fe403076c71f04d5d2d789a755b687c5637ec3bcd3b2b8252d76f2ba65f54261"
         },
         {
             "type": "file",
@@ -76,8 +76,8 @@
         },
         {
             "type": "file",
-            "url": "https://files.pythonhosted.org/packages/f2/bc/d817287d1aa01878af07c19505fafd1165cd6a119e9d0821ca1d1c20312d/attrs-22.1.0-py2.py3-none-any.whl",
-            "sha256": "86efa402f67bf2df34f51a335487cf46b1ec130d02b8d39fd248abfd30da551c"
+            "url": "https://files.pythonhosted.org/packages/fc/30/d4986a882011f9df997a55e6becd864812ccfcd821d64aac8570ee39f719/attrs-25.1.0-py3-none-any.whl",
+            "sha256": "c75a69e28a550a7e93789579c22aa26b0f5b83b75dc4e08fe092980051e1090a"
         },
         {
             "type": "file",
@@ -89,8 +89,8 @@
         },
         {
             "type": "file",
-            "url": "https://files.pythonhosted.org/packages/77/51/8073577012492fcd15628e811db585f447c500fa407e944ab3a18ec55fb7/incremental-22.10.0-py2.py3-none-any.whl",
-            "sha256": "b864a1f30885ee72c5ac2835a761b8fe8aa9c28b9395cacf27286602688d3e51"
+            "url": "https://files.pythonhosted.org/packages/27/87/156b374ff6578062965afe30cc57627d35234369b3336cf244b240c8d8e6/incremental-24.7.2.tar.gz",
+            "sha256": "fb4f1d47ee60efe87d4f6f0ebb5f70b9760db2b2574c59c8e8912be4ebd464c9"
         },
         {
             "type": "file",
@@ -112,8 +112,8 @@
         },
         {
             "type": "file",
-            "url": "https://files.pythonhosted.org/packages/0b/8e/f1a0a5a76cfef77e1eb6004cb49e5f8d72634da638420b9ea492ce8305e8/typing_extensions-4.4.0-py3-none-any.whl",
-            "sha256": "16fa4864408f655d35ec496218b85f79b3437c829e93320c7c9215ccfd92489e"
+            "url": "https://files.pythonhosted.org/packages/26/9f/ad63fc0248c5379346306f8668cda6e2e2e9c95e01216d2b8ffd9ff037d0/typing_extensions-4.12.2-py3-none-any.whl",
+            "sha256": "04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d"
         },
         {
             "type": "file",
