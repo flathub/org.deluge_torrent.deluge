@@ -153,8 +153,8 @@ modules:
   - python3 setup.py install --prefix=/app
   sources:
   - type: archive
-    url: https://files.pythonhosted.org/packages/92/97/2741828b69a23752af21bdc3aaf8792ce8b5cf07be74232deb9ad06f1f34/zope.proxy-5.1.tar.gz
-    sha256: 7777bd3f8f7cea74521726202e1a6d5153dbf649f204e250058ad03af46a4318
+    url: https://files.pythonhosted.org/packages/5c/1c/d051c6a2968a189787c7ed8f789201dd7ee0f40e5c1553ea513bdbd21dcf/zope_proxy-6.1.tar.gz
+    sha256: 9b70bf787fcbd3ecb86ba886d71e5cd857da0d6dbe2fcf2b6c24774f24747e2e
 
 - name: zope.location
   buildsystem: simple
