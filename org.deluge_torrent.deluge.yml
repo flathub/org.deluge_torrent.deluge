@@ -37,8 +37,8 @@ modules:
   buildsystem: simple
   sources:
   - type: archive
-    url: https://boostorg.jfrog.io/artifactory/main/release/1.83.0/source/boost_1_83_0.tar.bz2
-    sha256: 6478edfe2f3305127cffe8caf73ea0176c53769f4bf1585be237eb30798c3b8e 
+    url: https://archives.boost.io/release/1.88.0/source/boost_1_88_0.tar.bz2
+    sha256: 46d9d2c06637b219270877c9e16155cbd015b6dc84349af064c088e9b5b12f7b 
   build-commands:
   - ./bootstrap.sh --prefix="${FLATPAK_DEST}" --with-python=python3 
   - ./b2 stage  -j $FLATPAK_BUILDER_N_JOBS variant=release threading=multi link=shared debug-symbols=off
