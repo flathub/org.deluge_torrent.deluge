@@ -257,7 +257,7 @@ modules:
           - aarch64
         x-checker-data:
           type: pypi
-          name: cryptography
+          name: cffi
           packagetype: bdist_wheel
       
   - name: cryptography
