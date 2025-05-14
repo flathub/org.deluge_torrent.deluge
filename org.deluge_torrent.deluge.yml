@@ -2,9 +2,6 @@ app-id: org.deluge_torrent.deluge
 runtime: org.freedesktop.Platform
 runtime-version: "24.08"
 sdk: org.freedesktop.Sdk
-sdk-extension: org.gnome.Sdk
-#sdk-version: "43"
-  
 command: deluge-gtk
 rename-icon: deluge
 
@@ -30,894 +27,352 @@ cleanup:
   - /lib/*.la
 
 modules:
+  - name: boost
+    buildsystem: simple
+    build-commands:
+      - ./bootstrap.sh --prefix=/app --with-python=python3
+      - ./b2 stage -j $FLATPAK_BUILDER_N_JOBS variant=release threading=multi link=shared debug-symbols=off
+      - ./b2 install --prefix=/app variant=release threading=multi link=shared debug-symbols=off
+    sources:
+      - type: archive
+        url: https://archives.boost.io/release/1.88.0/source/boost_1_88_0.tar.bz2
+        sha256: 46d9d2c06637b219270877c9e16155cbd015b6dc84349af064c088e9b5b12f7b
 
-#- shared-modules/libappindicator/libappindicator-gtk3-introspection-12.10.json
+  - name: pycairo
+    buildsystem: meson
+    sources:
+      - type: archive
+        url: https://files.pythonhosted.org/packages/07/4a/42b26390181a7517718600fa7d98b951da20be982a50cd4afb3d46c2e603/pycairo-1.27.0.tar.gz
+        sha256: 5cb21e7a00a2afcafea7f14390235be33497a2cce53a98a19389492a60628430
 
-- name: boost
-  buildsystem: simple
-  sources:
-  - type: archive
-    url: https://boostorg.jfrog.io/artifactory/main/release/1.83.0/source/boost_1_83_0.tar.bz2
-    sha256: 6478edfe2f3305127cffe8caf73ea0176c53769f4bf1585be237eb30798c3b8e 
-  build-commands:
-  - ./bootstrap.sh --prefix="${FLATPAK_DEST}" --with-python=python3 
-  - ./b2 stage  -j $FLATPAK_BUILDER_N_JOBS variant=release threading=multi link=shared debug-symbols=off
-  - ./b2 install --prefix="${FLATPAK_DEST}" variant=release threading=multi link=shared debug-symbols=off
+  - name: pygobject
+    buildsystem: meson
+    config-opts:
+      - -Dpycairo=enabled
+    sources:
+      - type: archive
+        url: https://files.pythonhosted.org/packages/4a/36/fec530a313d3d48f12e112ac0a65ee3ccc87f385123a0493715609e8e99c/pygobject-3.52.3.tar.gz
+        sha256: 00e427d291e957462a8fad659a9f9c8be776ff82a8b76bdf402f1eaeec086d82
 
-- name: libtorrent
-  buildsystem: cmake-ninja
-  builddir: true
-  config-opts:
-    - -DCMAKE_BUILD_TYPE=RelWithDebInfo
-    - -Dpython-bindings=ON 
-    - -Dboost-python-module-name=python
-  sources:
+         
+  - name: rencode
+    buildsystem: simple
+    build-commands: 
+    - python3 setup.py install --prefix=/app
+    sources:
     - type: archive
-      url: https://github.com/arvidn/libtorrent/releases/download/v2.0.9/libtorrent-rasterbar-2.0.9.tar.gz
-      sha256: 90cd92b6061c5b664840c3d5e151d43fedb24f5b2b24e14425ffbb884ef1798e
+      url: https://files.pythonhosted.org/packages/75/41/14f6466c880334ff1fe2e0781e3c69a7fd5e524f8ae9bd3700091e0fefd8/rencode-1.0.5.tar.gz
+      sha256: fb66c92d35355d6098956204e663ddadf7f2cc8f64962846f67e1e1d036efc57 
 
-## Python3 modules
-- name: setuptools
-  buildsystem: simple
-  build-commands:
-    - python3 setup.py install --prefix=/app --root=/
-  sources:
-    - type: archive
-      url: https://files.pythonhosted.org/packages/92/ec/089608b791d210aec4e7f97488e67ab0d33add3efccb83a056cbafe3a2a6/setuptools-75.8.0.tar.gz
-      sha256: c5afc8f407c626b8313a86e10311dd3f661c6cd9c09d4bf8c15c0e11f9f2b0e6
+########## Python wheels
+  - name: libtorrent
+    buildsystem: simple
+    build-commands: 
+    - pip3 install --prefix=/app libtorrent*.whl
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/58/bd/475332a05b25de3b6d350144d8c5bfe74c23412c8e7f34dff43f8ded2cdb/libtorrent-2.0.11-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+        sha256: fbf4418471a96158d995c4573697ce2dcf27ca42d0b03c3bf97b0165015bf641
+        only-arches:
+          - x86_64
+        x-checker-data:
+          type: pypi
+          name: libtorrent
+          packagetype: bdist_wheel
+      - type: file
+        url: https://files.pythonhosted.org/packages/37/99/a4e5711fa26882165e653dd3c661ce1b3542ac9e51c3b660bfd134b43d36/libtorrent-2.0.11-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+        sha256: fea392e3e0b2f5e84000ec87fd2b3fa11477216875809737ce00c9ba07db4c55
+        only-arches:
+          - aarch64
+        x-checker-data:
+          type: pypi
+          name: libtorrent
+          packagetype: bdist_wheel
+        
+  - name: pyxdg
+    buildsystem: simple
+    build-commands: 
+    - pip3 install --prefix=/app pyxdg*.whl
+    sources:
+    - type: file
+      url: https://files.pythonhosted.org/packages/e5/8d/cf41b66a8110670e3ad03dab9b759704eeed07fa96e90fdc0357b2ba70e2/pyxdg-0.28-py2.py3-none-any.whl
+      sha256: bdaf595999a0178ecea4052b7f4195569c1ff4d344567bccdc12dfdf02d545ab
+      x-checker-data:
+        type: pypi
+        name: pyxdg
+        packagetype: bdist_wheel
+        
 
-
-- name: setuptools-scm
-  buildsystem: simple
-  build-commands:
-  - python3 setup.py install --prefix=/app --root=/
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/af/df/f8aa8a78d4d29e0cffa4512e9bc223ed02f24893fe1837c6cee2749ebd67/setuptools_scm-5.0.1.tar.gz
-    sha256: c85b6b46d0edd40d2301038cdea96bb6adc14d62ef943e75afb08b3e7bcf142a
-
-- name: multipart
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/1f/ce/8709efe606d05e591519c051deba36df346b165652b05e91c3e97eb6eb01/multipart-0.2.4.tar.gz
-    sha256: 06ba205360bc7096fefe618e4f1e9b2cdb890b4f2157053a81f386912a2522cb
-
-- name: pytz
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/69/4f/7bf883f12ad496ecc9514cd9e267b29a68b3e9629661a2bbc24f80eff168/pytz-2023.3.post1.tar.gz
-    sha256: 7b4fddbeb94a1eba4b557da24f19fdf9db575192544270a9101d8509f9f43d7b
-
-- name: python-gettext
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/f6/c8/85df0d3956bebdbaff936df47a5705be9e0b42404589a07065a39c8324e5/python-gettext-5.0.tar.gz
-    sha256: 869af1ea45e3dab6180557259824c2a62f1800e1286226af912431fe75c5084c
-
-- name: zope.event
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/46/c2/427f1867bb96555d1d34342f1dd97f8c420966ab564d58d18469a1db8736/zope.event-5.0.tar.gz
-    sha256: bac440d8d9891b4068e2b5a2c5e2c9765a9df762944bda6955f96bb9b91e67cd
-
-# using wheel for deluged
-- name: zope.interface
-  buildsystem: simple
-  build-commands:
+  - name: zope.interface
+    buildsystem: simple
+    build-commands: 
     - pip3 install --prefix=/app zope.interface*.whl
-  sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/96/08/2103587ebc989b455cf05e858e7fbdfeedfc3373358320e9c513428290b1/zope.interface-7.2-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-      sha256: cab15ff4832580aa440dc9790b8a6128abd0b88b7ee4dd56abacbc52f212209d
-      only-arches:
-        - x86_64
-      x-checker-data:
-        type: pypi
-        name: zope.interface
-        packagetype: bdist_wheel
-    - type: file
-      url: https://files.pythonhosted.org/packages/07/a8/106ca4c2add440728e382f1b16c7d886563602487bdd90004788d45eb310/zope.interface-7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
-      sha256: f6dd02ec01f4468da0f234da9d9c8545c5412fef80bc590cc51d8dd084138a89
-      only-arches:
-        - aarch64
-      x-checker-data:
-        type: pypi
-        name: zope.interface
-        packagetype: bdist_wheel
-
-
-- name: zope.schema
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/82/67/91585500260386df145b78532de588b41470d416bc6fa1cdc1b0f7a34e68/zope.schema-7.0.1.tar.gz
-    sha256: ead4dbcb03354d4e410c9a3b904451eb44d90254751b1cbdedf4a61aede9fbb9
-
-- name: zope.proxy
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/92/97/2741828b69a23752af21bdc3aaf8792ce8b5cf07be74232deb9ad06f1f34/zope.proxy-5.1.tar.gz
-    sha256: 7777bd3f8f7cea74521726202e1a6d5153dbf649f204e250058ad03af46a4318
-
-- name: zope.location
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/eb/f9/1fb7a001feb5fec6f180ef3610169f1cbef76e8c015c52409c2d18b7fac4/zope.location-5.0.tar.gz
-    sha256: 016fea934b97dad2b08a64ea7f2fbc3de55dbb074c461f66d871c70bf3aaaea5
-
-- name: zope.i18nmessageid
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/c0/55/73436beb7a4fdb139cf0ac259a2a67519460f91b1756bac05ba9af038568/zope.i18nmessageid-6.1.0.tar.gz
-    sha256: 45ac26fdc86fabdf7b78f1c1bccfc1d4372d1a54838bbaedda9dba7444ad8941
-
-- name: zope.hookable
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/78/ce/4eeb5f4d12bfb6ba46584c3e7cd0b8f29264b10a9159eaf06d90f71a22a9/zope.hookable-6.0.tar.gz
-    sha256: 1668993d40a7cfdc867843dd5725929e7f83a5b0c195c709af1daef8274f43cb
-    
-- name: zope.component
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/53/32/87db95f4a5f097aa837dcb951f5a4754e2e8d3ac70160a6c2df7bd215956/zope.component-6.0.tar.gz
-    sha256: 9a0a0472ad201b94b4fe6741ce9ac2c30b8bb22c516077bf03692dec4dfb6906
-
-- name: zope.tales
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/c7/92/4082559b9c3c888c8ad8bf2097ef029c92c9b081f804ccb98f413a79809e/zope.tales-6.0.tar.gz
-    sha256: 47e76ce36cfdb7d4d0e8c840913bd1deadf3b7a12b61d7351133cf95224266b0
-
-- name: zope.security
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/19/63/ab9cf7529413330069c69d2338e077d418c75ab34554a7c62d333eb9d42d/zope.security-6.2.tar.gz
-    sha256: 6af7704e7d8138b7d6c745601cac2d16fef27361e5d99c61b746f650a8fba1f7
-
-- name: zope.deprecation
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/ba/de/a47e434ed1804d82f3fd7561aee5c55914c72d87f54cac6b99c15cbe7f89/zope.deprecation-5.0.tar.gz
-    sha256: b7c32d3392036b2145c40b3103e7322db68662ab09b7267afe1532a9d93f640f
-
-- name: zope.i18n
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/79/2a/5b69b06c3cd2bfe55a6589d32eef275a536fecb4bcfece1a896215840ba4/zope.i18n-5.1.tar.gz
-    sha256: ea34e5e2e26e35407ced2970b2b7db78053ad0ec50f34a549ff204ef85b00af9
-
-- name: zope.exceptions
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/31/e1/557986e906763755c5de872f9a9854aca22fb546de578f735495963b5b9a/zope.exceptions-5.0.1.tar.gz
-    sha256: 30fc53e5339f5fbd9d1335e0f7b69f77f15e3f06e2b17b7fb7ef925cc24fdd96
-
-- name: zope.contenttype
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/40/73/2d056480dd7ed2647eafb3cfb1509a076793432bfb20394da9a2df4c6052/zope.contenttype-5.1.tar.gz
-    sha256: 0001ef1b65ca650519056dce530c58d0b396957ccf0502323c8a1549db64d317
-
-- name: zope.configuration
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/f7/ef/06e1600ed7102e1a8c81993c028d90d6da1e1283c25e99a618c353194244/zope.configuration-5.0.tar.gz
-    sha256: 234b4a18c71f6b3b9bf6bcf225264bae0149ac68dea07b072f0f699a4cec26e7
-
-- name: zope.browser
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/ba/f5/0a5ec6db335fd7e799f15e10dc8d127419d9175ea11464119a81c26f0bc4/zope.browser-3.0.tar.gz
-    sha256: 817139e84077b23618fec1883ead262ca54d5bda450ee8ac6814505e226e66a0
-
-- name: zope.publisher
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/c5/a6/f95a2706223b573f6252072dac24ef8a34d77e6f582efd14ed0a2a9d3e62/zope.publisher-7.0.tar.gz
-    sha256: 3d1238de4cecc2c96b95c9c6d29fd3d1aaf28d860c182d59c45a2ee6acaf714e
-
-- name: zope.contentprovider
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/4f/4d/9325fffb5d6e09308effff48b00f3a81e6e463719e7a42dae8e59188f7cd/zope.contentprovider-5.0.tar.gz
-    sha256: 3b0c17db78fa3ce27759fa3ddb400961b39b3fcbf2303329e06ce2b947864bf5
-    
-- name: transaction
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/0f/b0/03d196e1d6e37056cca040d9694220641e8a78c4a85d7d80e6feb03be7f5/transaction-4.0.tar.gz
-    sha256: 68035db913f60d1be12f6563d201daab36c83e763de15899ff8338f26e5e62f2
-    
-- name: zope.traversing
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/ba/eb/4fb91cde93ef76be16b958a8b48045892c94c3fca0834d29656f174ef70a/zope.traversing-5.0.tar.gz
-    sha256: f11c4622526cd328f3ab5cf6cc34c0226dc2137d26af9c11b34c507da11c44f5
-
-- name: zope.tal
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/f5/c8/dc51eb13a13e8e9d965bda205a50c589f12d33f3892f776f49b94a2a07fe/zope.tal-5.0.1.tar.gz
-    sha256: 3440e3b7bc8ea6395628b0cf15f2aa74027b8a0a742032740eec98881e14d7a7
-    
-- name: zope.pagetemplate
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/b7/37/2ef7ef75785943a1c4185746464b27b2527ff6aee522f913bef8644d9fc9/zope.pagetemplate-5.0.tar.gz
-    sha256: 5837de2f7d5ad6f6cf650b300f9df2a6fc7d832cfe0dde3569f4a63129e5aaea
-
-- name: zope.browserpage
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/ac/40/b03dd4bc87478001ebc714e6b538a264449d3db52249650d130b13f3be9c/zope.browserpage-5.0.tar.gz
-    sha256: 62d8e983cf55d5a07df91c5f8ecb412d75c762ca31058a8ee336057b4662bb2a
-- name: zope.viewlet
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/22/60/a924e90e0ba976597f9c817900e93a59b6fa02ad3d49dd88a76d3901509f/zope.viewlet-5.0.tar.gz
-    sha256: dba387c407c918244030c1a771773fec8e4167b0464e2f82474f489b8b306300
-
-- name: WebOb
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/c7/45/ee5f034fb4ebe3236fa49e5a4fcbc54444dd22ecf33079cf56f9606d479d/WebOb-1.8.7.tar.gz
-    sha256: b64ef5141be559cfade448f044fa45c2260351edcb6a8ef6b7e00c7dcef0c323
-
-- name: WSGIProxy2
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/f0/ae/cad3131f771a38b4cdad6ca82bfee1800afc69758c70d0e70483ed1f6b30/WSGIProxy2-0.5.1.tar.gz
-    sha256: 0d9ecb141de720e2fd4f7a275a4a83a961ffeb6717483d940021ffa1c46f665c
-
-- name: soupsieve
-  buildsystem: simple
-  build-commands:
-    - pip3 install --prefix=/app soupsieve*.whl
-  sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/4c/f3/038b302fdfbe3be7da016777069f26ceefe11a681055ea1f7817546508e3/soupsieve-2.5-py3-none-any.whl
-      sha256: eaa337ff55a1579b6549dc679565eac1e3d000563bcb1c8ab0d0fefbc0c2cdc7
-      x-checker-data:
-        type: pypi
-        name: soupsieve
-        packagetype: bdist_wheel
-
-- name: beautifulsoup4
-  buildsystem: simple
-  build-commands:
-    - pip3 install --prefix=/app beautifulsoup4-*.whl
-  sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/57/f4/a69c20ee4f660081a7dedb1ac57f29be9378e04edfcb90c526b923d4bebc/beautifulsoup4-4.12.2-py3-none-any.whl
-      sha256: bd2520ca0d9d7d12694a53d44ac482d181b4ec1888909b035a3dbf40d0f57d4a
-      x-checker-data:
-        type: pypi
-        name: beautifulsoup4
-        packagetype: bdist_wheel
-
-- name: zope.cachedescriptors
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/43/57/ad4078768d4c6557b1a0df5a3fb117bd1d54785b4a0763648304b3388560/zope.cachedescriptors-5.0.tar.gz
-    sha256: 3157be866fc9724d077a8b5bf6c3fc21c38a4147ab664e724622dfe5faff048a
-
-- name: waitress
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/72/83/c3de9799e2305898b02ea67bcd125ad06f271e2a82cc86fe66b7bf4e6f63/waitress-2.1.2.tar.gz
-    sha256: 780a4082c5fbc0fde6a2fcfe5e26e6efc1e8f425730863c04085769781f51eba
-    
-- name: WebTest
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/26/c8/8ffba1782700eb06e9b9169156698c6ba95c05b66cda3fc9e025b6b3b649/WebTest-3.0.0.tar.gz
-    sha256: 54bd969725838d9861a9fa27f8d971f79d275d94ae255f5c501f53bb6d9929eb
-
-- name: zope.testbrowser
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/42/3e/475e8be6a1f9865280f60fc5ed82f4e16153747d1266cf8dec02c07dc395/zope.testbrowser-6.0.tar.gz
-    sha256: 44b77a5e9037abedc36476a2ea3dc7e974d613ce5293dd77cc02f888ee31fa1a
-    
-- name: zope.testing
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/1c/45/a22985a9a5bb886ae0665f04c1ffe985d9558c3e9881fde808fc9dc0a6f9/zope.testing-5.0.1.tar.gz
-    sha256: e87cd0d8d666573cdaf133816ab7b9beec801a64a86595c19cb5fe992ef3d649
-
-- name: zope.size
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/cd/39/0f00742892eeb81e3fc9f8d73db4804d6c73ba4ebc0fbc376b855d28f39d/zope.size-5.0.tar.gz
-    sha256: b15453e34f816ff5459ad83cd935029aa581c6a453463e03c5e2d97bd20a432a
-
-- name: zope.lifecycleevent
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/6e/6b/1129e5cfe99ad76a0987e9f00c5102c3d5219699e4dca5a0466337c2553f/zope.lifecycleevent-5.0.tar.gz
-    sha256: ead3fb496e7614f9b569d16dad4b78052b0ac21875bad8d66ca350352d9b6f9d
-
-- name: zope.filerepresentation
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/d8/05/0001ada679e13c639139679fd49bf7195b3755d683c4bb21fc1e898a1d38/zope.filerepresentation-6.0.tar.gz
-    sha256: cb36b7886b29276f82f1685f3f291f4235e669cd8785d14742d465d13aef6aab
-
-- name: zope.deferredimport
-  buildsystem: simple
-  build-commands:
-    - pip3 install --prefix=/app zope.deferredimport*.whl
-  sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/69/f7/b5e232857f4d511b2628697bf2e48fca55ea4ed75b1432efd1bf024fbd12/zope.deferredimport-5.0-py3-none-any.whl
-      sha256: b26e013b02fd1ee3e26510db66a737105128e48a0d348490f7c901ffd1928f25
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/96/08/2103587ebc989b455cf05e858e7fbdfeedfc3373358320e9c513428290b1/zope.interface-7.2-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+        sha256: cab15ff4832580aa440dc9790b8a6128abd0b88b7ee4dd56abacbc52f212209d
+        only-arches:
+          - x86_64
+        x-checker-data:
+          type: pypi
+          name: zope.interface
+          packagetype: bdist_wheel
+      - type: file
+        url: https://files.pythonhosted.org/packages/07/a8/106ca4c2add440728e382f1b16c7d886563602487bdd90004788d45eb310/zope.interface-7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+        sha256: f6dd02ec01f4468da0f234da9d9c8545c5412fef80bc590cc51d8dd084138a89
+        only-arches:
+          - aarch64
+        x-checker-data:
+          type: pypi
+          name: zope.interface
+          packagetype: bdist_wheel
       
-- name: pycparser
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/5e/0b/95d387f5f4433cb0f53ff7ad859bd2c6051051cebbb564f139a999ab46de/pycparser-2.21.tar.gz
-    sha256: e644fdec12f7872f86c58ff790da456218b10f863970249516d60a5eaca77206
-    
-- name: cffi
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/68/ce/95b0bae7968c65473e1298efb042e10cafc7bafc14d9e4f154008241c91d/cffi-1.16.0.tar.gz
-    sha256: bcb3ef43e58665bbda2fb198698fcae6776483e0c4a631aa5647806c25e02cc0
-    
-- name: persistent
-  buildsystem: simple
-  build-commands:
-    - pip3 install --prefix=/app persistent*.whl
-  sources:
+      
+  - name: typing-extensions
+    buildsystem: simple
+    build-commands:
+      - pip3 install --prefix=/app typing*.whl
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/8b/54/b1ae86c0973cc6f0210b53d508ca3641fb6d0c56823f288d108bc7ab3cc8/typing_extensions-4.13.2-py3-none-any.whl
+        sha256: a439e7c04b49fec3e5d3e2beaa21755cadbbdc391694e28ccdd36ca4a1408f8c
+        x-checker-data:
+          type: pypi
+          name: typing-extensions
+          packagetype: bdist_wheel
+          
+  - name: incremental
+    buildsystem: simple
+    build-commands: 
+    - pip3 install --prefix=/app incremental*.whl
+    sources:
     - type: file
-      url: https://files.pythonhosted.org/packages/98/d8/f53cca4242e564c4be0e11846c57d8db0b9559fe038866061f02c891460a/persistent-6.1-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-      sha256: 2111566a7ac526240e37a4b2363cb9ebe40838369d363950222f15b5482cf944
-      only-arches:
-        - x86_64
+      url: https://files.pythonhosted.org/packages/0d/38/221e5b2ae676a3938c2c1919131410c342b6efc2baffeda395dd66eeca8f/incremental-24.7.2-py3-none-any.whl
+      sha256: 8cb2c3431530bec48ad70513931a760f446ad6c25e8333ca5d95e24b0ed7b8fe
       x-checker-data:
         type: pypi
-        name: persistent
+        name: incremental
         packagetype: bdist_wheel
+        
+  - name: idna
+    buildsystem: simple
+    build-commands: 
+    - pip3 install --prefix=/app idna*.whl
+    sources:
     - type: file
-      url: https://files.pythonhosted.org/packages/93/28/f9772cd88dfe6854c8865e7c61aecaa6a0ad6e668c848968c1cdef31dc0c/persistent-6.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
-      sha256: d626204286f84cfd4feef39387732d18832c76afbcba2bba4eee03b1ae759e8a
-      only-arches:
-        - aarch64
+      url: https://files.pythonhosted.org/packages/76/c6/c88e154df9c4e1a2a66ccf0005a88dfb2650c1dffb6f5ce603dfbd452ce3/idna-3.10-py3-none-any.whl
+      sha256: 946d195a0d259cbba61165e88e65941f16e9b36ea6ddb97f00452bae8b1287d3
       x-checker-data:
         type: pypi
-        name: persistent
+        name: idna
         packagetype: bdist_wheel
-            
-- name: zope.deferredimport
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/a1/b7/9b0c93edb4c6745ac8784c265d244f5b3bc4082d92f7aefe952aaa5be5f3/zope.deferredimport-5.0.tar.gz
-    sha256: 3abbf0e18c1f1765914ecd1d41b549e4d045b21b28e4065fb0c1de0ad736b2c3
-    
-- name: zope.dottedname
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/2d/a3/c372c3c29772a91fc3387f25e8d239297f59b0dca6ec6e0cdb0416e28dd2/zope.dottedname-6.0.tar.gz
-    sha256: dbc4b85bfbf34b1ef88dab16252ac6ef16d90439f2223b2d0a262cf419eae902
-
-- name: BTrees
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/3e/fa/e111f2a2676aa489e7b181c03a1adf82fc9ee691d648fbeb783638375fcc/BTrees-5.1.tar.gz
-    sha256: ada0f31e9325a04795d1d24e027ed9b2b65da4d66acff8b87955b3528d7fc369
-
-- name: zope.annotation
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/0a/7b/5285072d9a99724b86cb4c8783dd624c192966c3d231ed5722ad5869a4d5/zope.annotation-5.0.tar.gz
-    sha256: 714c401a9a74f07a6447413a0f10ff2684f2712bd4e5f069ef98c54c42bab42a
-
-- name: zope.container
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/8a/db/4c353d14cf58e5a9d8e68f3fed9c57deca264a46f39fa16b8296ad810615/zope.container-5.2.tar.gz
-    sha256: d19ce2213cd66c45b82a897a296af87825ac83f66c28d58cb095e608376f6c07
-    
-
-- name: zope.site
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/d3/4d/da5af540dfd5cd105979ce9232a84eacecd8a335535bb4d09504e286cb28/zope.site-5.0.tar.gz
-    sha256: 58f8135f40a7b22ef0d6e4dbd9324f414bc17f33b2482dfbe34f18e7ef05e21e
-
-- name: zope.sequencesort
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/fc/57/ec0f465031038a79567b6ce3e271eea88586bdc5d87e5aad697b00010b98/zope.sequencesort-5.0.tar.gz
-    sha256: 80d1ecaa5a8576e0f92533884cacc9aa9867ee0fc427ad70898ce1491972ef1c
-
-- name: zope.browserresource
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/ba/8c/8dd615056921d3c555320303653212c082719f6b4339c3ddc7bad718c612/zope.browserresource-5.1.tar.gz
-    sha256: bd4c2545f13f565f2d977cc02b13a11b3f75fe8a87b8450f96842b15c0467744
-
-- name: zope.ptresource
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/da/ac/eda7b3b74726d82ebbe712a3753bc36151f289f8271711c9c952c4c24910/zope.ptresource-5.0.tar.gz
-    sha256: fe1bfcba80cefb97bf1551409b7e24a7d30ba4941cdd6a95983d52f1f25e4b1a
-
-- name: zope.processlifetime
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/5e/e0/8e863d96442e642f0b8d55a5c370cf5b2db907799895b5b7d8aa041c14fe/zope.processlifetime-3.0.tar.gz
-    sha256: c049c195c6c23c0cecf9675ee1c6c02028e10cebf37c459c0aa1834d38bd8c2e
-
-- name: zope.globalrequest
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/10/3a/ae324d6de3cb543f21d94b635b0344db09ad4e531e7e33b4c88e5a2e18cf/zope.globalrequest-2.0.tar.gz
-    sha256: 2b1f4b2ec549c7baf381b0882be58569c327ec2171d1b0aa0f4c7b23630836ab
-
-- name: zope.datetime
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/f5/c7/bfb29f9747b487c6bd88dad6a5dad80bb6e92e91341fc648b1ee4998ff08/zope.datetime-5.0.0.tar.gz
-    sha256: c0d03970ea62b8db23694423d866e53778e6646ce8595f7b16ae6a185b69cec0
-
-- name: zope.browsermenu
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/eb/49/4f72dded0fd0094204278e69942ca12f78a82282eab4a78ff091989a1c47/zope.browsermenu-5.0.tar.gz
-    sha256: 8c066cfb7e12b40525eeeec4ec9905a635ea5cd46e5f16c950738792411fec7d
-
-- name: Chameleon
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/b2/de/a55e1ab06a2c4960ffe8233eaaa804f0422c3eb2f998d1c3156b36ae6760/Chameleon-4.4.3.tar.gz
-    sha256: 7ebdb2f962cb1b755d6f263438073f0887f371af585a66d21ab9ea240b418369
-
-- name: z3c.pt
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/c3/bb/16586f58f8048a4d2cc1149acde756b0a203ad5bf62d9f517c48d9879d36/z3c.pt-4.1.tar.gz
-    sha256: 33fa2a97b27d3e75f8f2047137d732c35061ce497cbc591b9047903568d19510
-    
-
-- name: zExceptions
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/1f/4c/c766014d7f5d31dea4c78948c7471305e643f2787753041249c07751cb78/zExceptions-5.0.tar.gz	
-    sha256: ec1e4003b0ec6b5e4ca150f64e3366a44978587afd84a38de8d4b64674e1a678
-
-- name: zc.lockfile
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/5b/83/a5432aa08312fc834ea594473385c005525e6a80d768a2ad246e78877afd/zc.lockfile-3.0.post1.tar.gz
-    sha256: adb2ee6d9e6a2333c91178dcb2c9b96a5744c78edb7712dc784a7d75648e81ec
-
-- name: zodbpickle
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/95/30/7f60f6f4382d472b7303255adea8fd877d2a9580d1f819102f40b694f0aa/zodbpickle-3.1.tar.gz
-    sha256: b9ec32e706c7b808b79a53a7ad96609117e94283772b400ee76552107aabcc11
-
-- name: ZConfig
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/05/1b/24f8eba7b5a51beed8eb256f08610afeddde3190475fa4f342902e4f7a0e/ZConfig-4.0.tar.gz
-    sha256: f8d642fba6ba98d08631be2c1f71ad1957c051fef4aa3d3fb9f1e08dc61d0156
-
-- name: ZODB
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/68/8f/ba84246f531ffe594f78e417ab9069673e2ffd12f210939f42d2c1b86aa9/ZODB-5.8.1.tar.gz
-    sha256: c6c73abd3660d606ffc1f21f97def14b52b46f4a702ec9e6ee449a6e2be264df
-
-- name: RestrictedPython
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/ce/7c/19254deb8d2e1a0eea74fe92c3dbd250b400aa853e027de6734fce7ea143/RestrictedPython-7.0.tar.gz
-    sha256: 53704afbbc350fdc8fb245441367be671c9f8380869201b2e8452e74fce3db14
-
-- name: PasteDeploy
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/e3/97/0c4a613ec96a54d21daa7e089178263915554320402e89b4e319436a63cb/PasteDeploy-3.1.0.tar.gz
-    sha256: 9ddbaf152f8095438a9fe81f82c78a6714b92ae8e066bed418b6a7ff6a095a95
-
-- name: ExtensionClass
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/3c/e8/3358bc76a82bb9a28b5371d2ac2ff9ea0323172e421d055ab3b9e559a0b8/ExtensionClass-5.1.tar.gz
-    sha256: 21121c5e12721ddf8fb7af90c4199ef46ea5045e9ffa98d9e20cd7c98025e3da
-
-- name: Persistence
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/e5/4d/5d05caeb8449dcc44a84bc331f2901ede1fe7921aa01aa892cfe1b9e34b8/Persistence-4.1.tar.gz
-    sha256: 80f4af7d8a040c4a80990edd363164ef12eaadffb8910db41feddeb0268a9d80
-
-- name: MultiMapping
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/42/a6/f524bda2338932a27a07aafd474293a9a730ba0abab1278b513b00692991/MultiMapping-5.0.tar.gz
-    sha256: f09f06dad4ecfe49ba86f4d8389246dc56c17d03148dd5a18b6e1b2856a4f377
-
-- name: roman
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/32/0c/10c242792e9c857d5d8df19780abec0f241c8a3d9631cccbce16d0f1c769/roman-4.1.tar.gz
-    sha256: 4da8a200529a730822a27f1704b3ac70bc907141d3bc558115fb8e36af13b412
-    
-- name: zope.structuredtext
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/65/91/d4f9c0f809f373fcc4cb9adbacd55649d2a0bb774c02f30a6c7cc499f013/zope.structuredtext-5.0.tar.gz
-    sha256: c627f997704edbc6aec9c1e88d7dacd48acc7eeeba3324bbf565cdbb1f3db682
-
-- name: Acquisition
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/6a/49/af690d6b6a756f5dc42ea38c6466f27f01ea21641f8d220a971f18929a53/Acquisition-5.1.tar.gz
-    sha256: 17e3504b707729cead1a6e70396fce9139802605e71105b5a9774ee578812677
-
-- name: DateTime
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/7e/86/2bd8fa8b63c91008c4f26fb2c7b4d661abf5a151db474e298e1c572caa57/DateTime-5.4.tar.gz
-    sha256: 568ea851d40773d846c0b5efe260aecb717c2b933c052a3c13b712809c16b57d
-
-- name: AuthEncoding
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/a8/4c/f0eb18cb8b3dd477094ff07f11f78f859550f7416b15a6bf08d173809f89/AuthEncoding-5.0.tar.gz
-    sha256: eeec900050a02f98b397072e8094c85244b87c7c93845a4da25113723999fa7d
-
-- name: RestrictedPython
-  buildsystem: simple
-  build-commands:
-    - pip3 install --prefix=/app RestrictedPython*.whl
-  sources:
+        
+  - name: hyperlink
+    buildsystem: simple
+    build-commands: 
+    - pip3 install --prefix=/app hyperlink*.whl
+    sources:
     - type: file
-      url: https://files.pythonhosted.org/packages/df/31/b33804f873742ab20c8ed82a75652bf60a6205116dfec8bb092a6ebef084/RestrictedPython-8.0-py3-none-any.whl
-      sha256: ed3d894efd7d6cac0a5f13f75583b8458378d400d7dd4c083b59233eba85fe69
-
-
-- name: AccessControl
-  buildsystem: simple
-  build-commands:
-    - pip3 install --prefix=/app AccessControl*.whl
-  sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/75/5e/f769db2e8389f36fcc50ab60083719e06ce6e122d2028993d17f1d74e2fb/AccessControl-7.2-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-      sha256: a92cbe0ab08f3c8680079f5c2ee0e10de68bc60fb92454f71d269e6aeaf7ca09
-      only-arches:
-        - x86_64
+      url: https://files.pythonhosted.org/packages/6e/aa/8caf6a0a3e62863cbb9dab27135660acba46903b703e224f14f447e57934/hyperlink-21.0.0-py2.py3-none-any.whl
+      sha256: e6b14c37ecb73e89c77d78cdb4c2cc8f3fb59a885c5b3f819ff4ed80f25af1b4
       x-checker-data:
         type: pypi
-        name: AccessControl
+        name: hyperlink
         packagetype: bdist_wheel
+        
+  - name: constantly
+    buildsystem: simple
+    build-commands: 
+    - pip3 install --prefix=/app constantly*.whl
+    sources:
     - type: file
-      url: https://files.pythonhosted.org/packages/94/ae/db4344a41c02522df5854d0edce3b638a92c1b037bd4d6b36f65d677b193/AccessControl-7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
-      sha256: 2f587a269a99ff4d7335008dc1bdfe219696b746859c306c7cabecd3afd775a3
-      only-arches:
-        - aarch64
+      url: https://files.pythonhosted.org/packages/b8/40/c199d095151addf69efdb4b9ca3a4f20f70e20508d6222bffb9b76f58573/constantly-23.10.4-py3-none-any.whl
+      sha256: 3fd9b4d1c3dc1ec9757f3c52aef7e53ad9323dbe39f51dfd4c43853b68dfa3f9
       x-checker-data:
         type: pypi
-        name: AccessControl
+        name: constantly
         packagetype: bdist_wheel
-- name: DocumentTemplate
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/0b/37/6ddc9ff06cc16a402e5aa8908b99f212dc429507e9e78a457d95448c5083/DocumentTemplate-4.6.tar.gz
-    sha256: 3b67e42036c7f725f9ab1d66010c7c1406dee4a55110bbaf0c1c643a1dacddb0
-
-- name: zope
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/5d/48/964d5a01cf85c5443c0f176b03c2aefafa70fef0f4f9933c46a03ba2ce00/Zope-5.9.tar.gz
-    sha256: 411f0de9d81d003734f536ca827e9069e0bb04533286d22e704e236fa84074f7
-
-- name: zope2
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/0c/b6/b05c357f7855b80847a2ac0de47352823ef6534e71d2c532686a973531bd/Zope2-4.0.tar.gz
-    sha256: 7d5f4312d891cbf6e5dfb27445e23d523cd9f71f79b6deff505d0cced9afb14e
-
-- name: Chameleon
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/b2/de/a55e1ab06a2c4960ffe8233eaaa804f0422c3eb2f998d1c3156b36ae6760/Chameleon-4.4.3.tar.gz
-    sha256: 7ebdb2f962cb1b755d6f263438073f0887f371af585a66d21ab9ea240b418369
-- name: pycparser
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/5e/0b/95d387f5f4433cb0f53ff7ad859bd2c6051051cebbb564f139a999ab46de/pycparser-2.21.tar.gz
-    sha256: e644fdec12f7872f86c58ff790da456218b10f863970249516d60a5eaca77206
+        
+  - name: automat
+    buildsystem: simple
+    build-commands: 
+    - pip3 install --prefix=/app automat*.whl
+    sources:
+    - type: file
+      url: https://files.pythonhosted.org/packages/02/ff/1175b0b7371e46244032d43a56862d0af455823b5280a50c63d99cc50f18/automat-25.4.16-py3-none-any.whl
+      sha256: 04e9bce696a8d5671ee698005af6e5a9fa15354140a87f4870744604dcdd3ba1
+      x-checker-data:
+        type: pypi
+        name: automat
+        packagetype: bdist_wheel
+        
+  - name: attrs
+    buildsystem: simple
+    build-commands: 
+    - pip3 install --prefix=/app attrs*.whl
+    sources:
+    - type: file
+      url: https://files.pythonhosted.org/packages/77/06/bb80f5f86020c4551da315d78b3ab75e8228f89f0162f2c3a819e407941a/attrs-25.3.0-py3-none-any.whl
+      sha256: 427318ce031701fea540783410126f03899a97ffc6f61596ad581ac2e40e3bc3
+      x-checker-data:
+        type: pypi
+        name: attrs
+        packagetype: bdist_wheel
+        
+  - name: twisted
+    buildsystem: simple
+    build-commands: 
+    - pip3 install --prefix=/app twisted*.whl
+    sources:
+    - type: file
+      url: https://files.pythonhosted.org/packages/70/53/a50654eb9c63da0df2b5dca8ec27656a88b7edd798de5ffad55353203874/twisted-24.11.0-py3-none-any.whl
+      sha256: fe403076c71f04d5d2d789a755b687c5637ec3bcd3b2b8252d76f2ba65f54261
+      x-checker-data:
+        type: pypi
+        name: twisted
+        packagetype: bdist_wheel
+        
+  - name: pycparser
+    buildsystem: simple
+    build-commands: 
+    - pip3 install --prefix=/app pycparser*.whl
+    sources:
+    - type: file
+      url: https://files.pythonhosted.org/packages/13/a3/a812df4e2dd5696d1f351d58b8fe16a405b234ad2886a0dab9183fb78109/pycparser-2.22-py3-none-any.whl
+      sha256: c3702b6d3dd8c7abc1afa565d7e63d53a1d0bd86cdc24edd75470f4de499cfcc
+      x-checker-data:
+        type: pypi
+        name: pycparser
+        packagetype: bdist_wheel
     
-- name: cffi
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/68/ce/95b0bae7968c65473e1298efb042e10cafc7bafc14d9e4f154008241c91d/cffi-1.16.0.tar.gz
-    sha256: bcb3ef43e58665bbda2fb198698fcae6776483e0c4a631aa5647806c25e02cc0
 
-- name: rencode
-  buildsystem: simple
-  build-commands: 
-  - python3 setup.py install --prefix=/app
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/75/41/14f6466c880334ff1fe2e0781e3c69a7fd5e524f8ae9bd3700091e0fefd8/rencode-1.0.5.tar.gz
-    sha256: fb66c92d35355d6098956204e663ddadf7f2cc8f64962846f67e1e1d036efc57 
+  - name: cffi
+    buildsystem: simple
+    build-commands: 
+    - pip3 install --prefix=/app cffi*.whl
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/b2/d5/da47df7004cb17e4955df6a43d14b3b4ae77737dff8bf7f8f333196717bf/cffi-1.17.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+        sha256: b62ce867176a75d03a665bad002af8e6d54644fad99a3c70905c543130e39d93
+        only-arches:
+          - x86_64
+        x-checker-data:
+          type: pypi
+          name: cffi
+          packagetype: bdist_wheel
+      - type: file
+        url: https://files.pythonhosted.org/packages/1a/df/f8d151540d8c200eb1c6fba8cd0dfd40904f1b0682ea705c36e6c2e97ab3/cffi-1.17.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+        sha256: da95af8214998d77a98cc14e3a3bd00aa191526343078b530ceb0bd710fb48a5
+        only-arches:
+          - aarch64
+        x-checker-data:
+          type: pypi
+          name: cffi
+          packagetype: bdist_wheel
+      
+  - name: cryptography
+    buildsystem: simple
+    build-commands:
+      - pip3 install --prefix=/app cryptography*.whl
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/f7/c8/e5c5d0e1364d3346a5747cdcd7ecbb23ca87e6dea4f942a44e88be349f06/cryptography-44.0.3-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+        sha256: 192ed30fac1728f7587c6f4613c29c584abdc565d7417c13904708db10206645
+        only-arches:
+          - x86_64
+        x-checker-data:
+          type: pypi
+          name: cryptography
+          packagetype: bdist_wheel
+      - type: file
+        url: https://files.pythonhosted.org/packages/b1/f0/7491d44bba8d28b464a5bc8cc709f25a51e3eac54c0a4444cf2473a57c37/cryptography-44.0.3-cp39-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+        sha256: f3ffef566ac88f75967d7abd852ed5f182da252d23fac11b4766da3957766759
+        only-arches:
+          - aarch64
+        x-checker-data:
+          type: pypi
+          name: cryptography
+          packagetype: bdist_wheel
 
-# Required python modules
-- python-modules.json
+  - name: pyOpenSSL
+    buildsystem: simple
+    build-commands: 
+    - pip3 install --prefix=/app pyOpenSSL*.whl
+    sources:
+    - type: file
+      url: https://files.pythonhosted.org/packages/ca/d7/eb76863d2060dcbe7c7e6cccfd95ac02ea0b9acc37745a0d99ff6457aefb/pyOpenSSL-25.0.0-py3-none-any.whl
+      sha256: 424c247065e46e76a37411b9ab1782541c23bb658bf003772c3405fbaa128e90
+      x-checker-data:
+        type: pypi
+        name: pyOpenSSL
+        packagetype: bdist_wheel        
 
-- name: pycairo
-  buildsystem: meson
 
-  
-  sources:
-  - type: archive
-    url: https://files.pythonhosted.org/packages/07/4a/42b26390181a7517718600fa7d98b951da20be982a50cd4afb3d46c2e603/pycairo-1.27.0.tar.gz
-    sha256: 5cb21e7a00a2afcafea7f14390235be33497a2cce53a98a19389492a60628430
+  - name: pyasn1
+    buildsystem: simple
+    build-commands: 
+    - pip3 install --prefix=/app pyasn1*.whl
+    sources:
+    - type: file
+      url: https://files.pythonhosted.org/packages/c8/f1/d6a797abb14f6283c0ddff96bbdd46937f64122b8c925cab503dd37f8214/pyasn1-0.6.1-py3-none-any.whl
+      sha256: 0d632f46f2ba09143da3a8afe9e33fb6f92fa2320ab7e886e2d0f7672af84629
+      x-checker-data:
+        type: pypi
+        name: pyasn1
+        packagetype: bdist_wheel     
 
-- name: pygobject
-  buildsystem: meson
-  config-opts:
-    - -Dpycairo=enabled
-  sources:
-    - type: archive
-      url: https://files.pythonhosted.org/packages/2b/58/d34e67a79631177e3c08e7d02b5165147f590171f2cae6769502af5f7f7e/pygobject-3.50.0.tar.gz
-      sha256: 4500ad3dbf331773d8dedf7212544c999a76fc96b63a91b3dcac1e5925a1d103
- 
-- name: deluge
-  buildsystem: simple
-  build-commands:
-  - python3 setup.py install --prefix=/app --root=/
+  - name: pyasn1-modules
+    buildsystem: simple
+    build-commands: 
+    - pip3 install --prefix=/app pyasn1_modules*.whl
+    sources:
+    - type: file
+      url: https://files.pythonhosted.org/packages/47/8d/d529b5d697919ba8c11ad626e835d4039be708a35b0d22de83a269a6682c/pyasn1_modules-0.4.2-py3-none-any.whl
+      sha256: 29253a9207ce32b64c3ac6600edc75368f98473906e8fd1043bd6b5b1de2c14a
+      x-checker-data:
+        type: pypi
+        name: pyasn1-modules
+        packagetype: bdist_wheel    
+        
+  - name: service-identity
+    buildsystem: simple
+    build-commands: 
+    - pip3 install --prefix=/app service_identity*.whl
+    sources:
+    - type: file
+      url: https://files.pythonhosted.org/packages/08/2c/ca6dd598b384bc1ce581e24aaae0f2bed4ccac57749d5c3befbb5e742081/service_identity-24.2.0-py3-none-any.whl
+      sha256: 6b047fbd8a84fd0bb0d55ebce4031e400562b9196e1e0d3e0fe2b8a59f6d4a85
+      x-checker-data:
+        type: pypi
+        name: service-identity
+        packagetype: bdist_wheel    
+        
 
-  post-install:
-
-  - install -Dm644 deluge/ui/data/share/applications/deluge.desktop.in /app/share/applications/org.deluge_torrent.deluge.desktop
-  - sed 's/^_//g' -i /app/share/applications/org.deluge_torrent.deluge.desktop
-  
-  - desktop-file-edit --set-icon=org.deluge_torrent.deluge /app/share/applications/org.deluge_torrent.deluge.desktop
-  - desktop-file-edit --set-key=Keywords --set-value="torrent;magnet;sharing" /app/share/applications/org.deluge_torrent.deluge.desktop
-  
-  - mkdir -p /app/share/metainfo
-  - install -Dm644 org.deluge_torrent.deluge.metainfo.xml /app/share/metainfo/
-  
-  # Fix open download folder bug
-  # https://dev.deluge-torrent.org/changeset/833b5a1f306dad600d0f64a5c897407ba1584830/
-#  - patch -p1 < open_download_folder.patch /app/lib/python3.8/site-packages/deluge/common.py
-  
-  sources:
-  - type: archive
-    url: https://ftp.osuosl.org/pub/deluge/source/2.1/deluge-2.1.1.tar.xz
-    sha256: 768dd319802e42437ab3794ebe75b497142e08ed5b0fb2503bad62cef442dff7
-  
-  - type: file
-    path: org.deluge_torrent.deluge.metainfo.xml
-#  - type: file
-#    path: patches/open_download_folder.patch
+  - name: deluge
+    buildsystem: simple
+    build-commands: 
+    - pip3 install --prefix=/app deluge*.whl
     
+    post-install:
+
+    - install -Dm644 deluge.desktop /app/share/applications/org.deluge_torrent.deluge.desktop
+    - desktop-file-edit --set-icon=org.deluge_torrent.deluge /app/share/applications/org.deluge_torrent.deluge.desktop
+    - desktop-file-edit --set-key=Keywords --set-value="torrent;magnet;sharing" /app/share/applications/org.deluge_torrent.deluge.desktop
     
+    - mkdir -p /app/share/metainfo
+    - install -Dm644 org.deluge_torrent.deluge.metainfo.xml /app/share/metainfo/
+    
+    sources:
+    - type: file
+      url: https://files.pythonhosted.org/packages/cc/c7/276957419239b1dd9856d99ac7957e2e43c8ab70b3cf246b7076b7dc62d7/deluge-2.2.0-py3-none-any.whl
+      sha256: 5ac4ce734d92a1a0c36a3b89db447967175a986c06e84ec9cc61ca73e88bf0b5
+    - type: file
+      path: org.deluge_torrent.deluge.metainfo.xml
+    - type: file
+      path: deluge.desktop
+      
+      x-checker-data:
+        type: pypi
+        name: deluge
+        packagetype: bdist_wheel    
+        

@@ -41,6 +41,7 @@
   <update_contact>https://github.com/fastrizwaan/deluge_flatpak</update_contact>
   <translation type="gettext">Deluge</translation>
   <releases>
+    <release date="2025-04-28" version="2.2.0"/>
     <release date="2022-07-10" version="2.1.1"/>
     <release date="2022-06-28" version="2.1.0"/>
     <release date="2021-12-15" version="2.0.5"/>
