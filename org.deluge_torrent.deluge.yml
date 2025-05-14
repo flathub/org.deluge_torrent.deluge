@@ -29,26 +29,14 @@ cleanup:
 modules:
   - name: boost
     buildsystem: simple
-    sources:
-      - type: archive
-        url: https://archives.boost.io/release/1.88.0/source/boost_1_88_0.tar.bz2
-        sha256: 46d9d2c06637b219270877c9e16155cbd015b6dc84349af064c088e9b5b12f7b
     build-commands:
       - ./bootstrap.sh --prefix=/app --with-python=python3
       - ./b2 stage -j $FLATPAK_BUILDER_N_JOBS variant=release threading=multi link=shared debug-symbols=off
       - ./b2 install --prefix=/app variant=release threading=multi link=shared debug-symbols=off
-
-  - name: libtorrent
-    buildsystem: cmake-ninja
-    builddir: true
-    config-opts:
-      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
-      - -Dpython-bindings=ON
-      - -Dboost-python-module-name=python
     sources:
       - type: archive
-        url: https://github.com/arvidn/libtorrent/releases/download/v2.0.9/libtorrent-rasterbar-2.0.9.tar.gz
-        sha256: 90cd92b6061c5b664840c3d5e151d43fedb24f5b2b24e14425ffbb884ef1798e
+        url: https://archives.boost.io/release/1.88.0/source/boost_1_88_0.tar.bz2
+        sha256: 46d9d2c06637b219270877c9e16155cbd015b6dc84349af064c088e9b5b12f7b
 
   - name: pycairo
     buildsystem: meson
@@ -63,10 +51,10 @@ modules:
       - -Dpycairo=enabled
     sources:
       - type: archive
-        url: https://files.pythonhosted.org/packages/2b/58/d34e67a79631177e3c08e7d02b5165147f590171f2cae6769502af5f7f7e/pygobject-3.50.0.tar.gz
-        sha256: 4500ad3dbf331773d8dedf7212544c999a76fc96b63a91b3dcac1e5925a1d103
+        url: https://files.pythonhosted.org/packages/4a/36/fec530a313d3d48f12e112ac0a65ee3ccc87f385123a0493715609e8e99c/pygobject-3.52.3.tar.gz
+        sha256: 00e427d291e957462a8fad659a9f9c8be776ff82a8b76bdf402f1eaeec086d82
 
-        
+         
   - name: rencode
     buildsystem: simple
     build-commands: 
@@ -77,7 +65,29 @@ modules:
       sha256: fb66c92d35355d6098956204e663ddadf7f2cc8f64962846f67e1e1d036efc57 
 
 ########## Python wheels
-
+  - name: libtorrent
+    buildsystem: simple
+    build-commands: 
+    - pip3 install --prefix=/app libtorrent*.whl
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/58/bd/475332a05b25de3b6d350144d8c5bfe74c23412c8e7f34dff43f8ded2cdb/libtorrent-2.0.11-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+        sha256: fbf4418471a96158d995c4573697ce2dcf27ca42d0b03c3bf97b0165015bf641
+        only-arches:
+          - x86_64
+        x-checker-data:
+          type: pypi
+          name: libtorrent
+          packagetype: bdist_wheel
+      - type: file
+        url: https://files.pythonhosted.org/packages/37/99/a4e5711fa26882165e653dd3c661ce1b3542ac9e51c3b660bfd134b43d36/libtorrent-2.0.11-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+        sha256: fea392e3e0b2f5e84000ec87fd2b3fa11477216875809737ce00c9ba07db4c55
+        only-arches:
+          - aarch64
+        x-checker-data:
+          type: pypi
+          name: libtorrent
+          packagetype: bdist_wheel
         
   - name: pyxdg
     buildsystem: simple
