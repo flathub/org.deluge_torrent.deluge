@@ -300,8 +300,8 @@ modules:
     - pip3 install --prefix=/app pyOpenSSL*.whl
     sources:
     - type: file
-      url: https://files.pythonhosted.org/packages/ca/d7/eb76863d2060dcbe7c7e6cccfd95ac02ea0b9acc37745a0d99ff6457aefb/pyOpenSSL-25.0.0-py3-none-any.whl
-      sha256: 424c247065e46e76a37411b9ab1782541c23bb658bf003772c3405fbaa128e90
+      url: https://files.pythonhosted.org/packages/80/28/2659c02301b9500751f8d42f9a6632e1508aa5120de5e43042b8b30f8d5d/pyopenssl-25.1.0-py3-none-any.whl
+      sha256: 2b11f239acc47ac2e5aca04fd7fa829800aeee22a2eb30d744572a157bd8a1ab
       x-checker-data:
         type: pypi
         name: pyOpenSSL
