@@ -297,7 +297,7 @@ modules:
   - name: pyOpenSSL
     buildsystem: simple
     build-commands: 
-    - pip3 install --prefix=/app pyOpenSSL*.whl
+    - pip3 install --prefix=/app py[Oo]pen[Ss][Ss][Ll]*.whl
     sources:
     - type: file
       url: https://files.pythonhosted.org/packages/80/28/2659c02301b9500751f8d42f9a6632e1508aa5120de5e43042b8b30f8d5d/pyopenssl-25.1.0-py3-none-any.whl
