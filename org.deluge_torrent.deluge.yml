@@ -1,6 +1,6 @@
 app-id: org.deluge_torrent.deluge
 runtime: org.freedesktop.Platform
-runtime-version: "24.08"
+runtime-version: '24.08'
 sdk: org.freedesktop.Sdk
 command: deluge-gtk
 rename-icon: deluge
@@ -31,7 +31,8 @@ modules:
     buildsystem: simple
     build-commands:
       - ./bootstrap.sh --prefix=/app --with-python=python3
-      - ./b2 stage -j $FLATPAK_BUILDER_N_JOBS variant=release threading=multi link=shared debug-symbols=off
+      - ./b2 stage -j $FLATPAK_BUILDER_N_JOBS variant=release threading=multi link=shared
+        debug-symbols=off
       - ./b2 install --prefix=/app variant=release threading=multi link=shared debug-symbols=off
     sources:
       - type: archive
@@ -54,21 +55,21 @@ modules:
         url: https://files.pythonhosted.org/packages/4a/36/fec530a313d3d48f12e112ac0a65ee3ccc87f385123a0493715609e8e99c/pygobject-3.52.3.tar.gz
         sha256: 00e427d291e957462a8fad659a9f9c8be776ff82a8b76bdf402f1eaeec086d82
 
-         
+
   - name: rencode
     buildsystem: simple
-    build-commands: 
-    - python3 setup.py install --prefix=/app
+    build-commands:
+      - python3 setup.py install --prefix=/app
     sources:
-    - type: archive
-      url: https://files.pythonhosted.org/packages/75/41/14f6466c880334ff1fe2e0781e3c69a7fd5e524f8ae9bd3700091e0fefd8/rencode-1.0.5.tar.gz
-      sha256: fb66c92d35355d6098956204e663ddadf7f2cc8f64962846f67e1e1d036efc57 
+      - type: archive
+        url: https://files.pythonhosted.org/packages/75/41/14f6466c880334ff1fe2e0781e3c69a7fd5e524f8ae9bd3700091e0fefd8/rencode-1.0.5.tar.gz
+        sha256: fb66c92d35355d6098956204e663ddadf7f2cc8f64962846f67e1e1d036efc57
 
 ########## Python wheels
   - name: libtorrent
     buildsystem: simple
-    build-commands: 
-    - pip3 install --prefix=/app libtorrent*.whl
+    build-commands:
+      - pip3 install --prefix=/app libtorrent*.whl
     sources:
       - type: file
         url: https://files.pythonhosted.org/packages/58/bd/475332a05b25de3b6d350144d8c5bfe74c23412c8e7f34dff43f8ded2cdb/libtorrent-2.0.11-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
@@ -88,25 +89,25 @@ modules:
           type: pypi
           name: libtorrent
           packagetype: bdist_wheel
-        
+
   - name: pyxdg
     buildsystem: simple
-    build-commands: 
-    - pip3 install --prefix=/app pyxdg*.whl
+    build-commands:
+      - pip3 install --prefix=/app pyxdg*.whl
     sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/e5/8d/cf41b66a8110670e3ad03dab9b759704eeed07fa96e90fdc0357b2ba70e2/pyxdg-0.28-py2.py3-none-any.whl
-      sha256: bdaf595999a0178ecea4052b7f4195569c1ff4d344567bccdc12dfdf02d545ab
-      x-checker-data:
-        type: pypi
-        name: pyxdg
-        packagetype: bdist_wheel
-        
+      - type: file
+        url: https://files.pythonhosted.org/packages/e5/8d/cf41b66a8110670e3ad03dab9b759704eeed07fa96e90fdc0357b2ba70e2/pyxdg-0.28-py2.py3-none-any.whl
+        sha256: bdaf595999a0178ecea4052b7f4195569c1ff4d344567bccdc12dfdf02d545ab
+        x-checker-data:
+          type: pypi
+          name: pyxdg
+          packagetype: bdist_wheel
+
 
   - name: zope.interface
     buildsystem: simple
-    build-commands: 
-    - pip3 install --prefix=/app zope.interface*.whl
+    build-commands:
+      - pip3 install --prefix=/app zope.interface*.whl
     sources:
       - type: file
         url: https://files.pythonhosted.org/packages/96/08/2103587ebc989b455cf05e858e7fbdfeedfc3373358320e9c513428290b1/zope.interface-7.2-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
@@ -126,130 +127,130 @@ modules:
           type: pypi
           name: zope.interface
           packagetype: bdist_wheel
-      
-      
+
+
   - name: typing-extensions
     buildsystem: simple
     build-commands:
       - pip3 install --prefix=/app typing*.whl
     sources:
       - type: file
-        url: https://files.pythonhosted.org/packages/8b/54/b1ae86c0973cc6f0210b53d508ca3641fb6d0c56823f288d108bc7ab3cc8/typing_extensions-4.13.2-py3-none-any.whl
-        sha256: a439e7c04b49fec3e5d3e2beaa21755cadbbdc391694e28ccdd36ca4a1408f8c
+        url: https://files.pythonhosted.org/packages/b5/00/d631e67a838026495268c2f6884f3711a15a9a2a96cd244fdaea53b823fb/typing_extensions-4.14.1-py3-none-any.whl
+        sha256: d1e1e3b58374dc93031d6eda2420a48ea44a36c2b4766a4fdeb3710755731d76
         x-checker-data:
           type: pypi
           name: typing-extensions
           packagetype: bdist_wheel
-          
+
   - name: incremental
     buildsystem: simple
-    build-commands: 
-    - pip3 install --prefix=/app incremental*.whl
+    build-commands:
+      - pip3 install --prefix=/app incremental*.whl
     sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/0d/38/221e5b2ae676a3938c2c1919131410c342b6efc2baffeda395dd66eeca8f/incremental-24.7.2-py3-none-any.whl
-      sha256: 8cb2c3431530bec48ad70513931a760f446ad6c25e8333ca5d95e24b0ed7b8fe
-      x-checker-data:
-        type: pypi
-        name: incremental
-        packagetype: bdist_wheel
-        
+      - type: file
+        url: https://files.pythonhosted.org/packages/0d/38/221e5b2ae676a3938c2c1919131410c342b6efc2baffeda395dd66eeca8f/incremental-24.7.2-py3-none-any.whl
+        sha256: 8cb2c3431530bec48ad70513931a760f446ad6c25e8333ca5d95e24b0ed7b8fe
+        x-checker-data:
+          type: pypi
+          name: incremental
+          packagetype: bdist_wheel
+
   - name: idna
     buildsystem: simple
-    build-commands: 
-    - pip3 install --prefix=/app idna*.whl
+    build-commands:
+      - pip3 install --prefix=/app idna*.whl
     sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/76/c6/c88e154df9c4e1a2a66ccf0005a88dfb2650c1dffb6f5ce603dfbd452ce3/idna-3.10-py3-none-any.whl
-      sha256: 946d195a0d259cbba61165e88e65941f16e9b36ea6ddb97f00452bae8b1287d3
-      x-checker-data:
-        type: pypi
-        name: idna
-        packagetype: bdist_wheel
-        
+      - type: file
+        url: https://files.pythonhosted.org/packages/76/c6/c88e154df9c4e1a2a66ccf0005a88dfb2650c1dffb6f5ce603dfbd452ce3/idna-3.10-py3-none-any.whl
+        sha256: 946d195a0d259cbba61165e88e65941f16e9b36ea6ddb97f00452bae8b1287d3
+        x-checker-data:
+          type: pypi
+          name: idna
+          packagetype: bdist_wheel
+
   - name: hyperlink
     buildsystem: simple
-    build-commands: 
-    - pip3 install --prefix=/app hyperlink*.whl
+    build-commands:
+      - pip3 install --prefix=/app hyperlink*.whl
     sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/6e/aa/8caf6a0a3e62863cbb9dab27135660acba46903b703e224f14f447e57934/hyperlink-21.0.0-py2.py3-none-any.whl
-      sha256: e6b14c37ecb73e89c77d78cdb4c2cc8f3fb59a885c5b3f819ff4ed80f25af1b4
-      x-checker-data:
-        type: pypi
-        name: hyperlink
-        packagetype: bdist_wheel
-        
+      - type: file
+        url: https://files.pythonhosted.org/packages/6e/aa/8caf6a0a3e62863cbb9dab27135660acba46903b703e224f14f447e57934/hyperlink-21.0.0-py2.py3-none-any.whl
+        sha256: e6b14c37ecb73e89c77d78cdb4c2cc8f3fb59a885c5b3f819ff4ed80f25af1b4
+        x-checker-data:
+          type: pypi
+          name: hyperlink
+          packagetype: bdist_wheel
+
   - name: constantly
     buildsystem: simple
-    build-commands: 
-    - pip3 install --prefix=/app constantly*.whl
+    build-commands:
+      - pip3 install --prefix=/app constantly*.whl
     sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/b8/40/c199d095151addf69efdb4b9ca3a4f20f70e20508d6222bffb9b76f58573/constantly-23.10.4-py3-none-any.whl
-      sha256: 3fd9b4d1c3dc1ec9757f3c52aef7e53ad9323dbe39f51dfd4c43853b68dfa3f9
-      x-checker-data:
-        type: pypi
-        name: constantly
-        packagetype: bdist_wheel
-        
+      - type: file
+        url: https://files.pythonhosted.org/packages/b8/40/c199d095151addf69efdb4b9ca3a4f20f70e20508d6222bffb9b76f58573/constantly-23.10.4-py3-none-any.whl
+        sha256: 3fd9b4d1c3dc1ec9757f3c52aef7e53ad9323dbe39f51dfd4c43853b68dfa3f9
+        x-checker-data:
+          type: pypi
+          name: constantly
+          packagetype: bdist_wheel
+
   - name: automat
     buildsystem: simple
-    build-commands: 
-    - pip3 install --prefix=/app automat*.whl
+    build-commands:
+      - pip3 install --prefix=/app automat*.whl
     sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/02/ff/1175b0b7371e46244032d43a56862d0af455823b5280a50c63d99cc50f18/automat-25.4.16-py3-none-any.whl
-      sha256: 04e9bce696a8d5671ee698005af6e5a9fa15354140a87f4870744604dcdd3ba1
-      x-checker-data:
-        type: pypi
-        name: automat
-        packagetype: bdist_wheel
-        
+      - type: file
+        url: https://files.pythonhosted.org/packages/02/ff/1175b0b7371e46244032d43a56862d0af455823b5280a50c63d99cc50f18/automat-25.4.16-py3-none-any.whl
+        sha256: 04e9bce696a8d5671ee698005af6e5a9fa15354140a87f4870744604dcdd3ba1
+        x-checker-data:
+          type: pypi
+          name: automat
+          packagetype: bdist_wheel
+
   - name: attrs
     buildsystem: simple
-    build-commands: 
-    - pip3 install --prefix=/app attrs*.whl
+    build-commands:
+      - pip3 install --prefix=/app attrs*.whl
     sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/77/06/bb80f5f86020c4551da315d78b3ab75e8228f89f0162f2c3a819e407941a/attrs-25.3.0-py3-none-any.whl
-      sha256: 427318ce031701fea540783410126f03899a97ffc6f61596ad581ac2e40e3bc3
-      x-checker-data:
-        type: pypi
-        name: attrs
-        packagetype: bdist_wheel
-        
+      - type: file
+        url: https://files.pythonhosted.org/packages/77/06/bb80f5f86020c4551da315d78b3ab75e8228f89f0162f2c3a819e407941a/attrs-25.3.0-py3-none-any.whl
+        sha256: 427318ce031701fea540783410126f03899a97ffc6f61596ad581ac2e40e3bc3
+        x-checker-data:
+          type: pypi
+          name: attrs
+          packagetype: bdist_wheel
+
   - name: twisted
     buildsystem: simple
-    build-commands: 
-    - pip3 install --prefix=/app twisted*.whl
+    build-commands:
+      - pip3 install --prefix=/app twisted*.whl
     sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/70/53/a50654eb9c63da0df2b5dca8ec27656a88b7edd798de5ffad55353203874/twisted-24.11.0-py3-none-any.whl
-      sha256: fe403076c71f04d5d2d789a755b687c5637ec3bcd3b2b8252d76f2ba65f54261
-      x-checker-data:
-        type: pypi
-        name: twisted
-        packagetype: bdist_wheel
-        
+      - type: file
+        url: https://files.pythonhosted.org/packages/eb/66/ab7efd8941f0bc7b2bd555b0f0471bff77df4c88e0cc31120c82737fec77/twisted-25.5.0-py3-none-any.whl
+        sha256: 8559f654d01a54a8c3efe66d533d43f383531ebf8d81d9f9ab4769d91ca15df7
+        x-checker-data:
+          type: pypi
+          name: twisted
+          packagetype: bdist_wheel
+
   - name: pycparser
     buildsystem: simple
-    build-commands: 
-    - pip3 install --prefix=/app pycparser*.whl
+    build-commands:
+      - pip3 install --prefix=/app pycparser*.whl
     sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/13/a3/a812df4e2dd5696d1f351d58b8fe16a405b234ad2886a0dab9183fb78109/pycparser-2.22-py3-none-any.whl
-      sha256: c3702b6d3dd8c7abc1afa565d7e63d53a1d0bd86cdc24edd75470f4de499cfcc
-      x-checker-data:
-        type: pypi
-        name: pycparser
-        packagetype: bdist_wheel
-    
+      - type: file
+        url: https://files.pythonhosted.org/packages/13/a3/a812df4e2dd5696d1f351d58b8fe16a405b234ad2886a0dab9183fb78109/pycparser-2.22-py3-none-any.whl
+        sha256: c3702b6d3dd8c7abc1afa565d7e63d53a1d0bd86cdc24edd75470f4de499cfcc
+        x-checker-data:
+          type: pypi
+          name: pycparser
+          packagetype: bdist_wheel
+
 
   - name: cffi
     buildsystem: simple
-    build-commands: 
-    - pip3 install --prefix=/app cffi*.whl
+    build-commands:
+      - pip3 install --prefix=/app cffi*.whl
     sources:
       - type: file
         url: https://files.pythonhosted.org/packages/b2/d5/da47df7004cb17e4955df6a43d14b3b4ae77737dff8bf7f8f333196717bf/cffi-1.17.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
@@ -269,7 +270,7 @@ modules:
           type: pypi
           name: cffi
           packagetype: bdist_wheel
-      
+
   - name: cryptography
     buildsystem: simple
     build-commands:
@@ -296,83 +297,84 @@ modules:
 
   - name: pyOpenSSL
     buildsystem: simple
-    build-commands: 
-    - pip3 install --prefix=/app py[Oo]pen[Ss][Ss][Ll]*.whl
+    build-commands:
+      - pip3 install --prefix=/app py[Oo]pen[Ss][Ss][Ll]*.whl
     sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/80/28/2659c02301b9500751f8d42f9a6632e1508aa5120de5e43042b8b30f8d5d/pyopenssl-25.1.0-py3-none-any.whl
-      sha256: 2b11f239acc47ac2e5aca04fd7fa829800aeee22a2eb30d744572a157bd8a1ab
-      x-checker-data:
-        type: pypi
-        name: pyOpenSSL
-        packagetype: bdist_wheel        
+      - type: file
+        url: https://files.pythonhosted.org/packages/80/28/2659c02301b9500751f8d42f9a6632e1508aa5120de5e43042b8b30f8d5d/pyopenssl-25.1.0-py3-none-any.whl
+        sha256: 2b11f239acc47ac2e5aca04fd7fa829800aeee22a2eb30d744572a157bd8a1ab
+        x-checker-data:
+          type: pypi
+          name: pyOpenSSL
+          packagetype: bdist_wheel
 
 
   - name: pyasn1
     buildsystem: simple
-    build-commands: 
-    - pip3 install --prefix=/app pyasn1*.whl
+    build-commands:
+      - pip3 install --prefix=/app pyasn1*.whl
     sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/c8/f1/d6a797abb14f6283c0ddff96bbdd46937f64122b8c925cab503dd37f8214/pyasn1-0.6.1-py3-none-any.whl
-      sha256: 0d632f46f2ba09143da3a8afe9e33fb6f92fa2320ab7e886e2d0f7672af84629
-      x-checker-data:
-        type: pypi
-        name: pyasn1
-        packagetype: bdist_wheel     
+      - type: file
+        url: https://files.pythonhosted.org/packages/c8/f1/d6a797abb14f6283c0ddff96bbdd46937f64122b8c925cab503dd37f8214/pyasn1-0.6.1-py3-none-any.whl
+        sha256: 0d632f46f2ba09143da3a8afe9e33fb6f92fa2320ab7e886e2d0f7672af84629
+        x-checker-data:
+          type: pypi
+          name: pyasn1
+          packagetype: bdist_wheel
 
   - name: pyasn1-modules
     buildsystem: simple
-    build-commands: 
-    - pip3 install --prefix=/app pyasn1_modules*.whl
+    build-commands:
+      - pip3 install --prefix=/app pyasn1_modules*.whl
     sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/47/8d/d529b5d697919ba8c11ad626e835d4039be708a35b0d22de83a269a6682c/pyasn1_modules-0.4.2-py3-none-any.whl
-      sha256: 29253a9207ce32b64c3ac6600edc75368f98473906e8fd1043bd6b5b1de2c14a
-      x-checker-data:
-        type: pypi
-        name: pyasn1-modules
-        packagetype: bdist_wheel    
-        
+      - type: file
+        url: https://files.pythonhosted.org/packages/47/8d/d529b5d697919ba8c11ad626e835d4039be708a35b0d22de83a269a6682c/pyasn1_modules-0.4.2-py3-none-any.whl
+        sha256: 29253a9207ce32b64c3ac6600edc75368f98473906e8fd1043bd6b5b1de2c14a
+        x-checker-data:
+          type: pypi
+          name: pyasn1-modules
+          packagetype: bdist_wheel
+
   - name: service-identity
     buildsystem: simple
-    build-commands: 
-    - pip3 install --prefix=/app service_identity*.whl
+    build-commands:
+      - pip3 install --prefix=/app service_identity*.whl
     sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/08/2c/ca6dd598b384bc1ce581e24aaae0f2bed4ccac57749d5c3befbb5e742081/service_identity-24.2.0-py3-none-any.whl
-      sha256: 6b047fbd8a84fd0bb0d55ebce4031e400562b9196e1e0d3e0fe2b8a59f6d4a85
-      x-checker-data:
-        type: pypi
-        name: service-identity
-        packagetype: bdist_wheel    
-        
+      - type: file
+        url: https://files.pythonhosted.org/packages/08/2c/ca6dd598b384bc1ce581e24aaae0f2bed4ccac57749d5c3befbb5e742081/service_identity-24.2.0-py3-none-any.whl
+        sha256: 6b047fbd8a84fd0bb0d55ebce4031e400562b9196e1e0d3e0fe2b8a59f6d4a85
+        x-checker-data:
+          type: pypi
+          name: service-identity
+          packagetype: bdist_wheel
+
 
   - name: deluge
     buildsystem: simple
-    build-commands: 
-    - pip3 install --prefix=/app deluge*.whl
-    
+    build-commands:
+      - pip3 install --prefix=/app deluge*.whl
+
     post-install:
 
-    - install -Dm644 deluge.desktop /app/share/applications/org.deluge_torrent.deluge.desktop
-    - desktop-file-edit --set-icon=org.deluge_torrent.deluge /app/share/applications/org.deluge_torrent.deluge.desktop
-    - desktop-file-edit --set-key=Keywords --set-value="torrent;magnet;sharing" /app/share/applications/org.deluge_torrent.deluge.desktop
-    
-    - mkdir -p /app/share/metainfo
-    - install -Dm644 org.deluge_torrent.deluge.metainfo.xml /app/share/metainfo/
-    
+      - install -Dm644 deluge.desktop /app/share/applications/org.deluge_torrent.deluge.desktop
+      - desktop-file-edit --set-icon=org.deluge_torrent.deluge /app/share/applications/org.deluge_torrent.deluge.desktop
+      - desktop-file-edit --set-key=Keywords --set-value="torrent;magnet;sharing"
+        /app/share/applications/org.deluge_torrent.deluge.desktop
+
+      - mkdir -p /app/share/metainfo
+      - install -Dm644 org.deluge_torrent.deluge.metainfo.xml /app/share/metainfo/
+
     sources:
-    - type: file
-      url: https://files.pythonhosted.org/packages/cc/c7/276957419239b1dd9856d99ac7957e2e43c8ab70b3cf246b7076b7dc62d7/deluge-2.2.0-py3-none-any.whl
-      sha256: 5ac4ce734d92a1a0c36a3b89db447967175a986c06e84ec9cc61ca73e88bf0b5
-    - type: file
-      path: org.deluge_torrent.deluge.metainfo.xml
-    - type: file
-      path: deluge.desktop
-      
-      x-checker-data:
-        type: pypi
-        name: deluge
-        packagetype: bdist_wheel    
-        
+      - type: file
+        url: https://files.pythonhosted.org/packages/cc/c7/276957419239b1dd9856d99ac7957e2e43c8ab70b3cf246b7076b7dc62d7/deluge-2.2.0-py3-none-any.whl
+        sha256: 5ac4ce734d92a1a0c36a3b89db447967175a986c06e84ec9cc61ca73e88bf0b5
+      - type: file
+        path: org.deluge_torrent.deluge.metainfo.xml
+      - type: file
+        path: deluge.desktop
+
+        x-checker-data:
+          type: pypi
+          name: deluge
+          packagetype: bdist_wheel
+
