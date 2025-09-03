@@ -75,7 +75,8 @@ modules:
       # remove -msse/-msse2 and force no-ext mode
       - sed -i 's/"-msse"//g; s/"-msse2"//g' build.py
       - echo "import setuptools; setuptools.setup()" > setup.py
-      - RENCODE_NO_EXT=1 pip3 install --no-deps --no-build-isolation --ignore-installed 
+      - RENCODE_NO_EXT=1 pip3 install --no-deps --no-build-isolation --ignore-installed --prefix=${FLATPAK_DEST} .
+
     sources:
     - type: archive
       url: https://files.pythonhosted.org/packages/39/92/f724e1931548ce8e070554994007e184cedc2506335f02c8e7a7234aee95/rencode-1.0.8.tar.gz
