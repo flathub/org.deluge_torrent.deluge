@@ -81,31 +81,19 @@ modules:
 
 
 
-
-  
   - name: libtorrent
-    buildsystem: simple
-    build-commands: 
-    - pip3 install --prefix=/app libtorrent*.whl
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DBUILD_SHARED_LIBS=OFF
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      - -DCMAKE_CXX_STANDARD=20
+      - -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON
+      - -Ddeprecated-functions=OFF
     sources:
-      - type: file
-        url: https://files.pythonhosted.org/packages/58/bd/475332a05b25de3b6d350144d8c5bfe74c23412c8e7f34dff43f8ded2cdb/libtorrent-2.0.11-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-        sha256: fbf4418471a96158d995c4573697ce2dcf27ca42d0b03c3bf97b0165015bf641
-        only-arches:
-          - x86_64
-        x-checker-data:
-          type: pypi
-          name: libtorrent
-          packagetype: bdist_wheel
-      - type: file
-        url: https://files.pythonhosted.org/packages/37/99/a4e5711fa26882165e653dd3c661ce1b3542ac9e51c3b660bfd134b43d36/libtorrent-2.0.11-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
-        sha256: fea392e3e0b2f5e84000ec87fd2b3fa11477216875809737ce00c9ba07db4c55
-        only-arches:
-          - aarch64
-        x-checker-data:
-          type: pypi
-          name: libtorrent
-          packagetype: bdist_wheel
+      - type: git
+        url: https://github.com/arvidn/libtorrent.git  # branch RC_1_2
+        commit: 3ae563b04342a3f7f024a353c2c3335ef613fd22
         
   - name: pyxdg
     buildsystem: simple
