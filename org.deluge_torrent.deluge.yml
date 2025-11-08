@@ -92,8 +92,8 @@ modules:
       - -Ddeprecated-functions=OFF
     sources:
       - type: git
-        url: https://github.com/arvidn/libtorrent.git  # branch RC_1_2
-        commit: 3ae563b04342a3f7f024a353c2c3335ef613fd22
+        url: https://github.com/arvidn/libtorrent.git
+        commit: 195f94d4a1283b58b042bb72a4f862d52fcc0f13
         
   - name: pyxdg
     buildsystem: simple
