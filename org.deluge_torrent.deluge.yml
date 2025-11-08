@@ -112,7 +112,7 @@ modules:
   - name: zope.interface
     buildsystem: simple
     build-commands: 
-    - pip3 install --prefix=/app zope.interface*.whl
+    - pip3 install --prefix=/app zope*.whl
     sources:
       - type: file
         url: https://files.pythonhosted.org/packages/da/29/49effcff64ef30731e35520a152a9dfcafec86cf114b4c2aff942e8264ba/zope_interface-8.0.1-cp312-cp312-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.whl
