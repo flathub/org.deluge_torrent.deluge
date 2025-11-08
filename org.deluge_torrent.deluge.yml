@@ -115,8 +115,8 @@ modules:
     - pip3 install --prefix=/app zope.interface*.whl
     sources:
       - type: file
-        url: https://files.pythonhosted.org/packages/96/08/2103587ebc989b455cf05e858e7fbdfeedfc3373358320e9c513428290b1/zope.interface-7.2-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-        sha256: cab15ff4832580aa440dc9790b8a6128abd0b88b7ee4dd56abacbc52f212209d
+        url: https://files.pythonhosted.org/packages/da/29/49effcff64ef30731e35520a152a9dfcafec86cf114b4c2aff942e8264ba/zope_interface-8.0.1-cp312-cp312-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.whl
+        sha256: 35a1565d5244997f2e629c5c68715b3d9d9036e8df23c4068b08d9316dcb2822
         only-arches:
           - x86_64
         x-checker-data:
@@ -124,8 +124,8 @@ modules:
           name: zope.interface
           packagetype: bdist_wheel
       - type: file
-        url: https://files.pythonhosted.org/packages/07/a8/106ca4c2add440728e382f1b16c7d886563602487bdd90004788d45eb310/zope.interface-7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
-        sha256: f6dd02ec01f4468da0f234da9d9c8545c5412fef80bc590cc51d8dd084138a89
+        url: https://files.pythonhosted.org/packages/c7/39/b947673ec9a258eeaa20208dd2f6127d9fbb3e5071272a674ebe02063a78/zope_interface-8.0.1-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl
+        sha256: 029ea1db7e855a475bf88d9910baab4e94d007a054810e9007ac037a91c67c6f
         only-arches:
           - aarch64
         x-checker-data:
