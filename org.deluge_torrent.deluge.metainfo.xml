@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2021 Asif Ali Rizvan -->
-<component type="desktop">
-  <id type="desktop">org.deluge_torrent.deluge</id>
+<component type="desktop-application">
+  <id>org.deluge_torrent.deluge</id>
   <launchable type="desktop-id">org.deluge_torrent.deluge.desktop</launchable>
   <metadata_license>CC0-1.0</metadata_license>
   <name>Deluge</name>
   <project_license>GPL-3.0</project_license>
   <summary>A fully-featured BitTorrent Client</summary>
   <url type="homepage">https://deluge-torrent.org</url>
+  <url type="bugtracker">https://dev.deluge-torrent.org</url>
+  <url type="vcs-browser">https://git.deluge-torrent.org/deluge</url>
   <url type="donation">https://www.patreon.com/deluge_cas</url>
   <description>
     <p>Deluge is a Free Software, cross-platform BitTorrent client on Python and Gtk3 with multiple user interfaces in client/server model.</p>
@@ -37,7 +39,9 @@
       <image>https://raw.githubusercontent.com/fastrizwaan/deluge_flatpak/main/screenshots/TWO.png</image>
     </screenshot>
   </screenshots>
-  <developer_name>Deluge Team</developer_name>
+  <developer id="org.deluge_torrent">
+    <name>Deluge Team</name>
+  </developer>
   <update_contact>https://github.com/fastrizwaan/deluge_flatpak</update_contact>
   <translation type="gettext">Deluge</translation>
   <releases>
